@@ -35,11 +35,11 @@ public class GroupListener extends SimpleListenerHost {
             groupMessageFacade.execute(event.getSender(),plainText);
         }
 
-        Image image = messageChain.first(Image.Key);
-        if (image != null) {
-            At at = new At(event.getSender());
-            event.getGroup().sendMessage(at.plus(image));
-        }
+//        Image image = messageChain.first(Image.Key);
+//        if (image != null) {
+//            At at = new At(event.getSender());
+//            event.getGroup().sendMessage(at.plus(image));
+//        }
 
     }
 
