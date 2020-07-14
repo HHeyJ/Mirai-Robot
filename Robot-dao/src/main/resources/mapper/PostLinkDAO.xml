@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.PostLinkDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.PostLinkDO">
+		<id property="id" column="ID" /><!--主键-->
+		<result property="area" column="AREA" /><!--区服ID-->
+		<result property="areaName" column="AREA_NAME" /><!--区服务名-->
+		<result property="linkType" column="LINK_TYPE" /><!--帖子链接类型-->
+		<result property="linkUrl" column="LINK_URL" /><!--帖子链接地址-->
+		<result property="gmtModify" column="GMT_MODIFY" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" /><!--创建时间-->
+		<result property="delete" column="DELETE" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ID` ,
+		`AREA` ,
+		`AREA_NAME` ,
+		`LINK_TYPE` ,
+		`LINK_URL` ,
+		`GMT_MODIFY` ,
+		`GMT_CREATE` ,
+		`DELETE` 
+	</sql>
+
+	<insert id="insertSelective" parameterType="com.hyq.robot.DO.PostLinkDO" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO `post_link`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="id!=null" >`ID`,</if>
+		<if test="area!=null" >`AREA`,</if>
+		<if test="areaName!=null" >`AREA_NAME`,</if>
+		<if test="linkType!=null" >`LINK_TYPE`,</if>
+		<if test="linkUrl!=null" >`LINK_URL`,</if>
+		<if test="gmtModify!=null" >`GMT_MODIFY`,</if>
+		<if test="gmtCreate!=null" >`GMT_CREATE`,</if>
+		<if test="delete!=null" >`DELETE`</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="id!=null" >#{id,jdbcType=BIGINT},</if>
+		<if test="area!=null" >#{area,jdbcType=BIGINT},</if>
+		<if test="areaName!=null" >#{areaName,jdbcType=VARCHAR},</if>
+		<if test="linkType!=null" >#{linkType,jdbcType=BIGINT},</if>
+		<if test="linkUrl!=null" >#{linkUrl,jdbcType=VARCHAR},</if>
+		<if test="gmtModify!=null" >#{gmtModify,jdbcType=TIMESTAMP},</if>
+		<if test="gmtCreate!=null" >#{gmtCreate,jdbcType=TIMESTAMP},</if>
+		<if test="delete!=null" >#{delete,jdbcType=INTEGER}</if>
+		</trim>
+	</insert>
+
+	<sql id="where_clause">
+    	<where>
+			<if test="id!=null" >`ID`=#{id,jdbcType=BIGINT}   </if>
+	        <if test="area!=null" > AND `AREA`=#{area,jdbcType=BIGINT}</if>
+	        <if test="areaName!=null" > AND `AREA_NAME`=#{areaName,jdbcType=VARCHAR}</if>
+	        <if test="linkType!=null" > AND `LINK_TYPE`=#{linkType,jdbcType=BIGINT}</if>
+	        <if test="linkUrl!=null" > AND `LINK_URL`=#{linkUrl,jdbcType=VARCHAR}</if>
+			<choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" parameterType="com.hyq.robot.query.PostLinkQuery" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM `post_link`
+		<include refid="where_clause" />
+	</select>
+</mapper>
+

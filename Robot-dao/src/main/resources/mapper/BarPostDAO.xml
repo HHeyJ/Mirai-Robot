@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.BarPostDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.BarPostDO">
+		<id property="id" column="ID" /><!--主键-->
+		<result property="floorId" column="FLOOR_ID" /><!--楼层-->
+		<result property="content" column="CONTENT" /><!--楼层内容-->
+		<result property="postUrl" column="POST_URL" /><!--帖子链接-->
+		<result property="pageNo" column="PAGE_NO" /><!--当前页数-->
+		<result property="gmtModify" column="GMT_MODIFY" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" /><!--创建时间-->
+		<result property="delete" column="DELETE" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ID` ,
+		`FLOOR_ID` ,
+		`CONTENT` ,
+		`POST_URL` ,
+		`PAGE_NO` ,
+		`GMT_MODIFY` ,
+		`GMT_CREATE` ,
+		`DELETE` 
+	</sql>
+
+	<insert id="insertBatch">
+		INSERT INTO
+		`bar_post`
+		(
+		`FLOOR_ID`,
+		`CONTENT`,
+		`POST_URL`,
+		`PAGE_NO`
+		) VALUES
+		<foreach collection="list" open="" close="" separator="," item="item">
+			(
+			#{item.floorId,jdbcType=BIGINT},
+			#{item.content,jdbcType=VARCHAR},
+			#{item.postUrl,jdbcType=VARCHAR},
+			#{item.pageNo,jdbcType=BIGINT}
+			)
+		</foreach>
+	</insert>
+
+	<sql id="where_clause">
+    	<where>
+			<if test="postUrl != null"> AND  `POST_URL` = #{postUrl,jdbcType=VARCHAR} </if>
+	        <choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" parameterType="com.hyq.robot.query.BarPostQuery" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM `bar_post`
+		<include refid="where_clause" />
+		ORDER BY `FLOOR_ID` DESC
+		LIMIT #{offset}, #{pageSize}
+	</select>
+</mapper>
+
