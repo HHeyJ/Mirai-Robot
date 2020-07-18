@@ -126,6 +126,12 @@
             <artifactId>jsoup</artifactId>
             <version>${jsoupVersion}</version>
         </dependency>
+        <!-- kotlin -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>1.3.72</version>
+        </dependency>
 
     </dependencies>
 </project>

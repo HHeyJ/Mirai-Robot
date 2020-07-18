@@ -7,7 +7,6 @@ import net.mamoe.mirai.BotFactoryJvm;
 import net.mamoe.mirai.event.Events;
 import net.mamoe.mirai.utils.BotConfiguration;
 import net.mamoe.mirai.utils.SystemDeviceInfoKt;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 
@@ -15,7 +14,6 @@ import java.io.File;
  * @author nanke
  * @date 2020/6/28 上午11:48
  */
-@Component
 public class RobotStar {
 
     public static Bot bot = null;
