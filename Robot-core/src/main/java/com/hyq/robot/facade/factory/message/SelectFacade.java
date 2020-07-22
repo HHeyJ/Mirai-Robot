@@ -1,9 +1,10 @@
-package com.hyq.robot.facade;
+package com.hyq.robot.facade.factory.message;
 
 import com.hyq.robot.DO.BarPostDO;
 import com.hyq.robot.DO.PostLinkDO;
 import com.hyq.robot.dao.BarPostDAO;
 import com.hyq.robot.dao.PostLinkDAO;
+import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.BarPostQuery;
 import com.hyq.robot.query.PostLinkQuery;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -24,27 +28,32 @@ import java.util.stream.Collectors;
  * @date 2020/7/14 下午8:52
  */
 @Service
-public class GroupSelectFacade {
+public class SelectFacade implements MessageFacade {
 
     @Resource
     private PostLinkDAO postLinkDAO;
     @Resource
     private BarPostDAO barPostDAO;
 
-    public void execute(Contact contact, Message message) {
+    @Override
+    public EnumKeyWord get() {
+        return EnumKeyWord.GROUP_SELECT;
+    }
+
+    public void execute(Contact sender, Contact group, Message message) {
         String content = message.contentToString();
 
         // 区服关键词 搜索关键词
         String areaKey = getAreaName(content);
         String selectKey = getSelectKey(content);
         if (StringUtils.isBlank(areaKey) || StringUtils.isBlank(selectKey)) {
-            SendHelper.sendSing(contact,new PlainText("【黑市查询】查询命令错误,请参考:查询？双梦？xx"));
+            SendHelper.sendSing(sender,new PlainText("【黑市查询】查询命令错误,请参考:查询？双梦？xx"));
             return ;
         }
         // 查询帖子信息
         List<PostLinkDO> postLinkDOS = postLinkDAO.queryByCondition(new PostLinkQuery(areaKey));
         if (CollectionUtils.isEmpty(postLinkDOS)) {
-            SendHelper.sendSing(contact,new PlainText("【" + areaKey + "】服务器未登记在案,请联系群主哈～"));
+            SendHelper.sendSing(sender,new PlainText("【" + areaKey + "】服务器未登记在案,请联系群主哈～"));
         }
 
         PostLinkDO postLinkDO = postLinkDOS.get(0);
@@ -55,16 +64,16 @@ public class GroupSelectFacade {
         // 相同内容过滤
         hitData = hitData.stream()
                 .collect(Collectors.collectingAndThen(
-                        Collectors.toCollection(() -> new TreeSet<BarPostDO>(Comparator.comparing(e -> e.getContent()))),
+                        Collectors.toCollection(() -> new TreeSet<BarPostDO>(Comparator.comparing(BarPostDO::getContent))),
                         ArrayList::new));
 
         String noDataContent = "【" + postLinkDO.getAreaName() + "黑市】" + "近2000楼未匹配到【" + selectKey + "】,换个词试试呢～";
         if (CollectionUtils.isEmpty(hitData)) {
-            SendHelper.sendSing(contact,new PlainText(noDataContent));
+            SendHelper.sendSing(sender,new PlainText(noDataContent));
         } else {
             // 发送
-            Collections.sort(hitData,Comparator.comparing(BarPostDO::getFloorId));
-            hitData.forEach(e -> SendHelper.sendSing(contact,
+            hitData.sort(Comparator.comparing(BarPostDO::getFloorId));
+            hitData.forEach(e -> SendHelper.sendSing(sender,
                     new PlainText("【" + postLinkDO.getAreaName() +"黑市】" + e.getFloorId() + "楼:" + e.getContent())));
         }
     }

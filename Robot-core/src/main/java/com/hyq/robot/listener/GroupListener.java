@@ -1,8 +1,11 @@
 package com.hyq.robot.listener;
 
 import com.hyq.robot.constants.CommonConstant;
-import com.hyq.robot.facade.GroupMessageFacade;
+import com.hyq.robot.enums.EnumKeyWord;
+import com.hyq.robot.facade.factory.MessageFactory;
+import com.hyq.robot.facade.factory.message.MessageFacade;
 import com.hyq.robot.star.RobotStar;
+import com.hyq.robot.utils.MessageUtil;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
@@ -21,7 +24,7 @@ import javax.annotation.Resource;
 public class GroupListener extends SimpleListenerHost {
 
     @Resource
-    private GroupMessageFacade groupMessageFacade;
+    private MessageFactory messageFactory;
 
     @EventHandler
     public void onMessage(GroupMessageEvent event) {
@@ -32,14 +35,15 @@ public class GroupListener extends SimpleListenerHost {
         MessageChain messageChain = event.getMessage();
         PlainText plainText = messageChain.first(PlainText.Key);
         if (plainText != null) {
-            groupMessageFacade.execute(event.getSender(),plainText);
+            // 关键词检索
+            EnumKeyWord ruleEnum = EnumKeyWord.groupFind(MessageUtil.getKeybyWord(plainText.contentToString(),1));
+            if (ruleEnum == null) {
+                return ;
+            }
+            // 会话处理器
+            MessageFacade messageFacade = messageFactory.get(ruleEnum);
+            messageFacade.execute(event.getSender(),event.getGroup(),plainText);
         }
-
-//        Image image = messageChain.first(Image.Key);
-//        if (image != null) {
-//            At at = new At(event.getSender());
-//            event.getGroup().sendMessage(at.plus(image));
-//        }
 
     }
 
