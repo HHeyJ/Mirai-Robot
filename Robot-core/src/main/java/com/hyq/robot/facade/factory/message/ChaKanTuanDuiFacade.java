@@ -1,0 +1,65 @@
+package com.hyq.robot.facade.factory.message;
+
+import com.hyq.robot.DO.TeamDO;
+import com.hyq.robot.DO.TeamMemberDO;
+import com.hyq.robot.constants.CommonConstant;
+import com.hyq.robot.dao.TeamDAO;
+import com.hyq.robot.dao.TeamMemberDAO;
+import com.hyq.robot.enums.EnumKeyWord;
+import com.hyq.robot.helper.SendHelper;
+import com.hyq.robot.query.TeamMemberQuery;
+import com.hyq.robot.query.TeamQuery;
+import com.hyq.robot.utils.GroupMemberUtil;
+import gui.ava.html.image.generator.HtmlImageGenerator;
+import net.mamoe.mirai.contact.Contact;
+import net.mamoe.mirai.contact.Member;
+import net.mamoe.mirai.message.data.At;
+import net.mamoe.mirai.message.data.Image;
+import net.mamoe.mirai.message.data.Message;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author nanke
+ * @date 2020/7/22 下午11:03
+ */
+@Component
+public class ChaKanTuanDuiFacade implements MessageFacade {
+
+    @Resource
+    private TeamDAO teamDAO;
+    @Resource
+    private TeamMemberDAO teamMemberDAO;
+
+    @Override
+    public EnumKeyWord get() {
+        return EnumKeyWord.GROUP_SEE_KAITUAN;
+    }
+
+    @Override
+    public void execute(Contact sender, Contact group, Message message) {
+
+        At at = new At((Member) sender);
+        // 查询群内团队
+        TeamQuery teamQuery = new TeamQuery();
+        teamQuery.setGroupId(group.getId());
+        List<TeamDO> teamDOS = teamDAO.queryByCondition(teamQuery);
+        if (CollectionUtils.isEmpty(teamDOS)) {
+            SendHelper.sendSing(group,at.plus("群内暂无有效团队,请确认。"));
+            return ;
+        }
+        // 查询团队成员
+        TeamMemberQuery memberQuery = new TeamMemberQuery();
+        memberQuery.setTeamId(teamDOS.get(0).getId());
+        List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
+        // 渲染HTML
+        String htmlStr = GroupMemberUtil.replaceMember(teamDOS.get(0).getTeamName(), teamMemberDOS);
+        HtmlImageGenerator generator = new HtmlImageGenerator();
+        generator.loadHtml(GroupMemberUtil.replaceInit("",htmlStr));
+        Image image = group.uploadImage(generator.getBufferedImage());
+        SendHelper.sendSing(group,at.plus("团队详情如下:").plus(image));
+    }
+}

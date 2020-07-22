@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.TeamMemberDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.TeamMemberDO">
+		<id property="id" column="ID" /><!--主键-->
+		<result property="teamId" column="TEAM_ID" /><!--团ID-->
+		<result property="location" column="LOCATION" /><!--队伍位置-->
+		<result property="position" column="POSITION" /><!--职业-->
+		<result property="color" column="COLOR" /><!--填充颜色-->
+		<result property="memberName" column="MEMBER_NAME" /><!--角色名-->
+		<result property="qq" column="QQ" /><!--QQ-->
+		<result property="gmtModify" column="GMT_MODIFY" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" /><!--创建时间-->
+		<result property="delete" column="DELETE" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ID` ,
+		`TEAM_ID` ,
+		`LOCATION` ,
+		`POSITION` ,
+		`COLOR` ,
+		`MEMBER_NAME` ,
+		`QQ` ,
+		`GMT_MODIFY` ,
+		`GMT_CREATE` ,
+		`DELETE` 
+	</sql>
+
+	<insert id="insertSelective" parameterType="com.hyq.robot.DO.TeamMemberDO" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		 `team_member`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="teamId!=null" >`TEAM_ID`,</if>
+		<if test="location!=null" >`LOCATION`,</if>
+		<if test="position!=null" >`POSITION`,</if>
+		<if test="color!=null" >`COLOR`,</if>
+		<if test="memberName!=null" >`MEMBER_NAME`,</if>
+		<if test="qq!=null" >`QQ`,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="teamId!=null" >#{teamId,jdbcType=BIGINT},</if>
+		<if test="location!=null" >#{location,jdbcType=BIGINT},</if>
+		<if test="position!=null" >#{position,jdbcType=VARCHAR},</if>
+		<if test="color!=null" >#{color,jdbcType=VARCHAR},</if>
+		<if test="memberName!=null" >#{memberName,jdbcType=VARCHAR},</if>
+		<if test="qq!=null" >#{qq,jdbcType=BIGINT},</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.hyq.robot.DO.TeamMemberDO">
+		UPDATE `team_member`
+		SET `DELETE` = #{delete,jdbcType=INTEGER}
+		WHERE `ID` = #{id,jdbcType=BIGINT}
+	</update>
+
+	<sql id="where_clause">
+    	<where>
+			<if test="id!=null" >`ID`=#{id,jdbcType=BIGINT}</if>
+	        <if test="teamId!=null" > AND `TEAM_ID`=#{teamId,jdbcType=BIGINT}</if>
+	        <if test="location!=null" > AND `LOCATION`=#{location,jdbcType=BIGINT}</if>
+	        <if test="qq!=null" > AND `QQ`=#{qq,jdbcType=BIGINT}</if>
+			<choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM `team_member`
+		<include refid="where_clause" />
+	</select>
+</mapper>
+

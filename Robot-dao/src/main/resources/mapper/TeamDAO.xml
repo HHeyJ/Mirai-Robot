@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.TeamDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.TeamDO">
+		<id property="id" column="ID" /><!--主键-->
+		<result property="teamName" column="TEAM_NAME" /><!--团标题-->
+		<result property="groupId" column="GROUP_ID" /><!--QQ群ID-->
+		<result property="gmtModify" column="GMT_MODIFY" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" /><!--创建时间-->
+		<result property="delete" column="DELETE" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ID` ,
+		`TEAM_NAME` ,
+		`GROUP_ID` ,
+		`GMT_MODIFY` ,
+		`GMT_CREATE` ,
+		`DELETE` 
+	</sql>
+
+	<insert id="insertSelective" parameterType="com.hyq.robot.DO.TeamDO" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		 `team`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="teamName!=null" >`TEAM_NAME`,</if>
+		<if test="groupId!=null" >`GROUP_ID`,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="teamName!=null" >#{teamName,jdbcType=VARCHAR},</if>
+		<if test="groupId!=null" >#{groupId,jdbcType=BIGINT},</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.hyq.robot.DO.TeamDO">
+		UPDATE `team`
+		SET `DELETE` = #{delete,jdbcType=INTEGER}
+		WHERE `ID` = #{id,jdbcType=BIGINT}
+	</update>
+
+	<sql id="where_clause">
+    	<where>
+			<if test="id!=null" >`ID`=#{id,jdbcType=BIGINT}   </if>
+	        <if test="teamName!=null" > AND `TEAM_NAME`=#{teamName,jdbcType=VARCHAR}</if>
+	        <if test="groupId!=null" > AND `GROUP_ID`=#{groupId,jdbcType=BIGINT}</if>
+			<choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM `team`
+		<include refid="where_clause" />
+	</select>
+</mapper>
+

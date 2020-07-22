@@ -132,6 +132,13 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>1.3.72</version>
         </dependency>
+        <!-- Html2Image -->
+        <dependency>
+            <groupId>gui.ava</groupId>
+            <artifactId>html2image</artifactId>
+            <version>0.9</version>
+        </dependency>
+
 
     </dependencies>
 </project>
