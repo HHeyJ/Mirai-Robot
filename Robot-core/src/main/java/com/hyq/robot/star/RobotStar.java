@@ -18,7 +18,7 @@ public class RobotStar {
 
     public static Bot bot = null;
 
-    public static final Long QQ = 3420204519L;
+    public static final Long QQ = 430287797L;
     public static final String PASSWORD = "";
 
     static {
