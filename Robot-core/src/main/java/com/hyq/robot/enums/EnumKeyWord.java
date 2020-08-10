@@ -13,9 +13,9 @@ public enum EnumKeyWord {
      * 查询?双梦?踏云
      */
     GROUP_SELECT(1,2,"查询"),
-//    GROUP_LOVE(1,3,"夸人"),
+    GROUP_LOVE(1,3,"夸"),
 //    GROUP_FUCK(1,4,"骂人"),
-//    GROUP_SOUP(1,5,"鸡汤"),
+    GROUP_SOUP(1,5,"鸡汤"),
 
     /**
      * 开团？团队标题
@@ -65,8 +65,9 @@ public enum EnumKeyWord {
 
         List<EnumKeyWord> collect = Arrays.stream(EnumKeyWord.values()).filter(e -> e.type.equals(1)).collect(Collectors.toList());
         for (EnumKeyWord value : collect) {
-            if (value.keyWord.equals(keyWord))
+            if (keyWord.matches(value.keyWord + ".*")) {
                 return value;
+            }
         }
         return null;
     }

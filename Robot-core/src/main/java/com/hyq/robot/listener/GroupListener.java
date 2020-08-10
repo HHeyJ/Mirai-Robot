@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author nanke
@@ -43,6 +45,17 @@ public class GroupListener extends SimpleListenerHost {
             // 会话处理器
             MessageFacade messageFacade = messageFactory.get(ruleEnum);
             messageFacade.execute(event.getSender(),event.getGroup(),plainText);
+        }
+
+        FlashImage flashImage = messageChain.first(FlashImage.Key);
+        if (flashImage != null) {
+            try {
+                PlainText remindText = new PlainText(event.getGroup().getId() + "群内" + event.getSender().getId() + "发送了闪照");
+                Image image = event.getGroup().uploadImage(new URL(RobotStar.bot.queryImageUrl(flashImage.getImage())));
+                RobotStar.bot.getGroup(CommonConstant.informGroupId).sendMessage(remindText.plus(image));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
     }

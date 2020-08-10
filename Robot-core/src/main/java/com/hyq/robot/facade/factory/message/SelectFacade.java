@@ -54,6 +54,7 @@ public class SelectFacade implements MessageFacade {
         List<PostLinkDO> postLinkDOS = postLinkDAO.queryByCondition(new PostLinkQuery(areaKey));
         if (CollectionUtils.isEmpty(postLinkDOS)) {
             SendHelper.sendSing(sender,new PlainText("【" + areaKey + "】服务器未登记在案,请联系群主哈～"));
+            return ;
         }
 
         PostLinkDO postLinkDO = postLinkDOS.get(0);

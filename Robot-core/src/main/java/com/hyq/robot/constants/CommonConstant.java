@@ -10,7 +10,13 @@ public interface CommonConstant {
      * 错误反馈QQ
      */
     Long errorSendId = 1154685452L;
-
+    /**
+     * 通知QQ群
+     */
+    Long informGroupId = 839762931L;
+    /**
+     * 排期HTML
+     */
     String htmlStr = "<!DOCTYPE html>\n" +
             "<html>\n" +
             "<head>\n" +
