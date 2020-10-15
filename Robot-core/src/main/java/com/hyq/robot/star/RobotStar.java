@@ -25,7 +25,7 @@ public class RobotStar {
         // 机器人
         bot = BotFactoryJvm.newBot(QQ, PASSWORD, new BotConfiguration() {{
             // 设备缓存信息
-            setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File("deviceInfo.json"), context));
+            setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File(RobotStar.QQ + "L.json"), context));
         }});
         // 登陆
         bot.login();
