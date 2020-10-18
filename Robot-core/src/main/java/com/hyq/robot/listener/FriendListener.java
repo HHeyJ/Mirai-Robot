@@ -45,6 +45,9 @@ public class FriendListener extends SimpleListenerHost {
             }
             // 会话处理器
             MessageFacade messageFacade = messageFactory.get(ruleEnum);
+            if (messageFacade == null) {
+                return ;
+            }
             messageFacade.execute(event.getSender(),null,plainText);
         }
 
