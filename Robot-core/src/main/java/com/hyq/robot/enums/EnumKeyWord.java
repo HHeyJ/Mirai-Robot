@@ -34,6 +34,7 @@ public enum EnumKeyWord {
 
 
     PRIVATE_DEFAULT(2,1,""),
+    PRIVATE_SELECT(2,2,"查询"),
     ;
 
     /**
@@ -81,7 +82,7 @@ public enum EnumKeyWord {
 
         List<EnumKeyWord> collect = Arrays.stream(EnumKeyWord.values()).filter(e -> e.type.equals(2)).collect(Collectors.toList());
         for (EnumKeyWord value : collect) {
-            if (value.keyWord.equals(keyWord))
+            if (keyWord.matches(value.keyWord + ".*"))
                 return value;
         }
         return EnumKeyWord.PRIVATE_DEFAULT;

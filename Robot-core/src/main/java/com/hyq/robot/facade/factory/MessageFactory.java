@@ -23,7 +23,6 @@ public class MessageFactory {
             if (messageFacade.get().equals(keyWord)) {
                 return messageFacade;
             }
-            continue;
         }
         return null;
     }

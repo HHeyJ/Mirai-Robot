@@ -74,7 +74,7 @@
         <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-qqandroid</artifactId>
-            <version>1.1-EA</version>
+            <version>1.3.2</version>
         </dependency>
         <!--  springBoot  -->
         <dependency>
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>1.3.72</version>
+            <version>1.4.10</version>
         </dependency>
         <!-- Html2Image -->
         <dependency>
