@@ -37,9 +37,9 @@ public class RobotStar {
         /**
          * 事件监听器注册
          */
-        Events.registerEvents(bot,friendListener);
-        Events.registerEvents(bot,groupListener);
-        Events.registerEvents(bot,friendRequestListener);
+//        Events.registerEvents(bot,friendListener);
+//        Events.registerEvents(bot,groupListener);
+//        Events.registerEvents(bot,friendRequestListener);
         /**
          * 挂载该机器人的协程
          */
