@@ -13,7 +13,7 @@ public interface CommonConstant {
     /**
      * 通知QQ群
      */
-    Long informGroupId = 839762931L;
+    Long selectGroupId = 839762931L;
     /**
      * 排期HTML
      */

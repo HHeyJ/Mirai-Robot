@@ -1,7 +1,5 @@
 package com.hyq.robot.star;
 
-import com.hyq.robot.listener.FriendListener;
-import com.hyq.robot.listener.FriendRequestListener;
 import com.hyq.robot.listener.GroupListener;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactoryJvm;
@@ -19,7 +17,7 @@ public class RobotStar {
 
     public static Bot bot = null;
 
-    public static final Long QQ = 430287797L;
+    public static final Long QQ = 3420204519L;
     public static final String PASSWORD = "";
 
     static {
@@ -32,14 +30,12 @@ public class RobotStar {
         bot.login();
     }
 
-    public static void star(FriendListener friendListener, GroupListener groupListener, FriendRequestListener friendRequestListener) {
+    public static void star(GroupListener groupListener) {
 
         /**
          * 事件监听器注册
          */
-        Events.registerEvents(bot,friendListener);
         Events.registerEvents(bot,groupListener);
-        Events.registerEvents(bot,friendRequestListener);
         /**
          * 挂载该机器人的协程
          */

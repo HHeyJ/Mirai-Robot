@@ -1,8 +1,6 @@
 package com.hyq.robot;
 
 import com.hyq.robot.helper.ApplicationContextHelper;
-import com.hyq.robot.listener.FriendListener;
-import com.hyq.robot.listener.FriendRequestListener;
 import com.hyq.robot.listener.GroupListener;
 import com.hyq.robot.star.RobotStar;
 import org.springframework.boot.SpringApplication;
@@ -19,8 +17,6 @@ public class MiraiRobotStar {
         // SpringBoot启动
         SpringApplication.run(MiraiRobotStar.class,args);
         // Mirai启动
-        RobotStar.star(ApplicationContextHelper.getBean(FriendListener.class),
-                ApplicationContextHelper.getBean(GroupListener.class),
-                ApplicationContextHelper.getBean(FriendRequestListener.class));
+        RobotStar.star(ApplicationContextHelper.getBean(GroupListener.class));
     }
 }
