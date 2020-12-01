@@ -27,6 +27,7 @@ public enum EnumKeyWord {
      * 报名？职业？角色名？位置
      */
     GROUP_BAOMING(1,9,"报名"),
+    GROUP_JIAOHUAN(1,10,"交换"),
     /**
      * 取消报名？位置
      */
