@@ -56,6 +56,12 @@
 		WHERE `ID` = #{id,jdbcType=BIGINT}
 	</update>
 
+	<update id="updateLocationById" parameterType="com.hyq.robot.DO.TeamMemberDO">
+		UPDATE `team_member`
+		SET `LOCATION` = #{location,jdbcType=INTEGER}
+		WHERE `ID` = #{id,jdbcType=BIGINT}
+	</update>
+
 	<sql id="where_clause">
     	<where>
 			<if test="id!=null" >`ID`=#{id,jdbcType=BIGINT}</if>

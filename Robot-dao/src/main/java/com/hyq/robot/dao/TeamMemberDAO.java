@@ -24,6 +24,12 @@ public interface TeamMemberDAO {
     void updateById(TeamMemberDO updateDO);
 
     /**
+     * 根据ID调整位置
+     * @param updateDO
+     */
+    void updateLocationById(TeamMemberDO updateDO);
+
+    /**
     * 条件查询
     * @param query
     * @return
