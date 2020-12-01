@@ -8,10 +8,11 @@ package com.hyq.robot.enums;
  */
 public enum EnumPosition {
 
+    YANTIAN("衍天","#9A32CD"),
     LINXUE("凌雪","#930000"),
     PENGLAI("蓬莱","#C4E1FF"),
     BADAO("霸刀","#5151A2"),
-    CHANGGE("长歌","#7AFEC6"),
+    CHANGGE("莫问","#7AFEC6"),
     NAIGE("奶歌","#7AFEC6"),
     FENSHAN("分山","#F75000"),
     TIEGU("铁骨","#F75000"),

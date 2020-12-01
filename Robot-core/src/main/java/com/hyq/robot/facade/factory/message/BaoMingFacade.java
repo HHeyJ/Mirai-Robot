@@ -56,14 +56,14 @@ public class BaoMingFacade implements MessageFacade {
         String position = MessageUtil.getKeybyWord(content, 2);
         EnumPosition enumPosition = EnumPosition.get(position);
         if (enumPosition == null) {
-            SendHelper.sendSing(group,at.plus("职业匹配错误,请输入正确报名格式eg:报名？分山？角色名？位置(几队第几位eg:22)," +
-                    "参照以下职业列表:[凌雪,蓬莱,霸道,长歌,奶歌,分山,铁骨,丐帮,焚影,明尊,田螺,惊羽,毒经,奶毒,藏剑,傲雪,铁牢,剑纯,气纯,冰心,奶秀,花间,奶花,易筋,洗髓]"));
+            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 职业名 角色名 队伍位置(22 二队第二)"));
+            SendHelper.sendSing(group,at.plus("职业列表:[衍天,凌雪,蓬莱,霸道,莫问,奶歌,分山,铁骨,丐帮,焚影,明尊,田螺,惊羽,毒经,奶毒,藏剑,傲雪,铁牢,剑纯,气纯,冰心,奶秀,花间,奶花,易筋,洗髓]"));
             return ;
         }
         // 检查角色名
         String memberName = MessageUtil.getKeybyWord(content, 3);
         if (StringUtils.isBlank(memberName)) {
-            SendHelper.sendSing(group,at.plus("请输入正确报名格式eg:报名？分山？角色名？位置(几队第几位eg:22)"));
+            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 职业名 角色名 队伍位置(22 二队第二)"));
             return ;
         }
         // 获取位置
@@ -72,7 +72,7 @@ public class BaoMingFacade implements MessageFacade {
         try {
             location = Long.valueOf(locationStr);
         } catch (Exception e) {
-            SendHelper.sendSing(group,at.plus("请输入正确报名格式eg:报名？分山？角色名？位置(几队第几位eg:22)"));
+            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 职业名 角色名 队伍位置(22 二队第二)"));
             return ;
         }
         // 检查位置正确性
