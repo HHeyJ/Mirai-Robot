@@ -10,6 +10,7 @@ import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.PlainText;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +42,12 @@ public class GroupListener extends SimpleListenerHost {
             if (ruleEnum == null) {
                 return ;
             }
+            // 是否拥有权限
+            boolean havePower = checkPower(ruleEnum, event);
+            if (!havePower) {
+                event.getGroup().sendMessage(new At(event.getSender()).plus(new PlainText("爬")));
+                return ;
+            }
             // 会话处理器
             MessageFacade messageFacade = messageFactory.get(ruleEnum);
             if (messageFacade == null) {
@@ -58,5 +65,18 @@ public class GroupListener extends SimpleListenerHost {
          * 给自己发消息
          */
         RobotStar.bot.getFriend(CommonConstant.errorSendId).sendMessage("群聊消息处理错误!" + exception.getMessage());
+    }
+
+    /**
+     * 需要校验权限的关键字
+     * @param keyWord
+     * @return
+     */
+    private boolean checkPower(EnumKeyWord keyWord, GroupMessageEvent event) {
+
+        if (keyWord == EnumKeyWord.GROUP_CANCEL_KAITUAN || keyWord == EnumKeyWord.GROUP_KAITUAN) {
+            return event.getPermission().getLevel() > 0;
+        }
+        return true;
     }
 }
