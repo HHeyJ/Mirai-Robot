@@ -31,7 +31,8 @@ public enum EnumKeyWord {
     /**
      * 取消报名？位置
      */
-    GROUP_CANCEL_BAOMING(1,10,"取消报名"),
+    GROUP_CANCEL_BAOMING(1,11,"取消报名"),
+    GROUP_JINZU(1,12,"上线进组"),
 
 
     PRIVATE_DEFAULT(2,1,""),

@@ -74,7 +74,9 @@ public class GroupListener extends SimpleListenerHost {
      */
     private boolean checkPower(EnumKeyWord keyWord, GroupMessageEvent event) {
 
-        if (keyWord == EnumKeyWord.GROUP_CANCEL_KAITUAN || keyWord == EnumKeyWord.GROUP_KAITUAN) {
+        if (keyWord == EnumKeyWord.GROUP_CANCEL_KAITUAN
+                || keyWord == EnumKeyWord.GROUP_KAITUAN
+                || keyWord == EnumKeyWord.GROUP_JINZU) {
             return event.getPermission().getLevel() > 0;
         }
         return true;
