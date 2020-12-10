@@ -14,6 +14,7 @@ import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
+import net.mamoe.mirai.message.data.PlainText;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -51,9 +52,16 @@ public class CancelBaoMingFacade implements MessageFacade {
             SendHelper.sendSing(group,at.plus("暂无有效团队,请确认。"));
             return ;
         }
+        // 团队序号校验
+        String teamNumStr = MessageUtil.getKeybyWord(content, 2);
+        Integer teamNum = MessageUtil.checkTeamNum(teamDOS.size(),teamNumStr);
+        if (teamNum.equals(0) || teamNum.equals(-1)) {
+            SendHelper.sendSing(group,at.plus(new PlainText("请使用口令【查看团队】后选择正确团队序号,从上至下1,2,...,n。")));
+            return ;
+        }
         // 获取位置
         Long location = null;
-        String locationStr = MessageUtil.getKeybyWord(content, 2);
+        String locationStr = MessageUtil.getKeybyWord(content, 3);
         try {
             location = Long.valueOf(locationStr);
         } catch (Exception e) {
@@ -66,15 +74,16 @@ public class CancelBaoMingFacade implements MessageFacade {
             return ;
         }
         // 查询位置报名情况
+        TeamDO teamDO = teamDOS.get(teamNum - 1);
         TeamMemberQuery memberQuery = new TeamMemberQuery();
-        memberQuery.setTeamId(teamDOS.get(0).getId());
+        memberQuery.setTeamId(teamDO.getId());
         memberQuery.setLocation(location);
         List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
         if (CollectionUtils.isEmpty(teamMemberDOS)) {
             SendHelper.sendSing(group,at.plus("该位置暂无人报名,请确认。"));
             return ;
         }
-        // TODO 取消权限校验
+        // 取消
         TeamMemberDO updateDO = new TeamMemberDO();
         updateDO.setId(teamMemberDOS.get(0).getId());
         updateDO.setDelete(1);

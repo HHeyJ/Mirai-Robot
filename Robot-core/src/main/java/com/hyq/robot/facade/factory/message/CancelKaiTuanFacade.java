@@ -5,6 +5,7 @@ import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.TeamQuery;
+import com.hyq.robot.utils.MessageUtil;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
@@ -45,11 +46,19 @@ public class CancelKaiTuanFacade implements MessageFacade {
             return ;
         }
 
+        String content = message.contentToString();
+        // 团队序号校验
+        String teamNumStr = MessageUtil.getKeybyWord(content, 2);
+        Integer teamNum = MessageUtil.checkTeamNum(teamDOS.size(),teamNumStr);
+        if (teamNum.equals(0) || teamNum.equals(-1)) {
+            SendHelper.sendSing(group,at.plus(new PlainText("请使用口令【查看团队】后选择正确团队序号,从上至下1,2,...,n。")));
+            return ;
+        }
+        // 取消团队
         TeamDO updateDO = new TeamDO();
-        updateDO.setId(teamDOS.get(0).getId());
+        updateDO.setId(teamDOS.get(teamNum - 1).getId());
         updateDO.setDelete(1);
         teamDAO.updateById(updateDO);
-
         SendHelper.sendSing(group,at.plus("取消成功。"));
     }
 }

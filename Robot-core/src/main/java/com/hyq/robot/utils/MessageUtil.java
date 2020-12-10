@@ -48,4 +48,23 @@ public class MessageUtil {
             return "";
         return split.get(level - 1);
     }
+
+    /**
+     * 校验团队序号
+     * @param allTeamNum
+     * @param teamNumStr
+     * @return 0发生异常,-1序号错误
+     */
+    public static Integer checkTeamNum(Integer allTeamNum, String teamNumStr) {
+
+        try {
+            Integer teamNum = Integer.valueOf(teamNumStr);
+            if (teamNum > allTeamNum || teamNum < 1) {
+                return -1;
+            }
+            return teamNum;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }

@@ -56,6 +56,7 @@
 		SELECT <include refid="Base_Column_List" />
 		FROM `team`
 		<include refid="where_clause" />
+		ORDER BY `ID` ASC
 	</select>
 </mapper>
 

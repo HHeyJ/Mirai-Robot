@@ -18,23 +18,18 @@ public enum EnumKeyWord {
     GROUP_SOUP(1,5,"鸡汤"),
 
     /**
-     * 开团？团队标题
+     * 副本排单助手
      */
     GROUP_KAITUAN(1,6,"开团"),
     GROUP_CANCEL_KAITUAN(1,7,"取消开团"),
     GROUP_SEE_KAITUAN(1,8,"查看团队"),
-    /**
-     * 报名？职业？角色名？位置
-     */
     GROUP_BAOMING(1,9,"报名"),
     GROUP_JIAOHUAN(1,10,"交换"),
-    /**
-     * 取消报名？位置
-     */
     GROUP_CANCEL_BAOMING(1,11,"取消报名"),
     GROUP_JINZU(1,12,"上线进组"),
-
-
+    /**
+     * 私聊口令
+     */
     PRIVATE_DEFAULT(2,1,""),
     PRIVATE_SELECT(2,2,"查询"),
     ;
@@ -68,7 +63,10 @@ public enum EnumKeyWord {
 
         List<EnumKeyWord> collect = Arrays.stream(EnumKeyWord.values()).filter(e -> e.type.equals(1)).collect(Collectors.toList());
         for (EnumKeyWord value : collect) {
-            if (keyWord.matches(value.keyWord + ".*")) {
+//            if (keyWord.matches(value.keyWord + ".*")) {
+//                return value;
+//            }
+            if (keyWord.equals(value.keyWord)) {
                 return value;
             }
         }

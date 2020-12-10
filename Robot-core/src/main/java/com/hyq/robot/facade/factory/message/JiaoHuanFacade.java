@@ -14,6 +14,7 @@ import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
+import net.mamoe.mirai.message.data.PlainText;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -53,9 +54,16 @@ public class JiaoHuanFacade implements MessageFacade {
             return ;
         }
         String content = message.contentToString();
+        // 团队序号校验
+        String teamNumStr = MessageUtil.getKeybyWord(content, 2);
+        Integer teamNum = MessageUtil.checkTeamNum(teamDOS.size(),teamNumStr);
+        if (teamNum.equals(0) || teamNum.equals(-1)) {
+            SendHelper.sendSing(group,at.plus(new PlainText("请使用口令【查看团队】后选择正确团队序号,从上至下1,2,...,n。")));
+            return ;
+        }
         // 获取第一个位置
         Long one = null;
-        String oneStr = MessageUtil.getKeybyWord(content, 2);
+        String oneStr = MessageUtil.getKeybyWord(content, 3);
         try {
             one = Long.valueOf(oneStr);
         } catch (Exception e) {
@@ -64,7 +72,7 @@ public class JiaoHuanFacade implements MessageFacade {
         }
         // 获取第二个位置
         Long two = null;
-        String twoStr = MessageUtil.getKeybyWord(content, 3);
+        String twoStr = MessageUtil.getKeybyWord(content, 4);
         try {
             two = Long.valueOf(twoStr);
         } catch (Exception e) {
@@ -77,8 +85,9 @@ public class JiaoHuanFacade implements MessageFacade {
             return ;
         }
         // 获取团队报名情况
+        TeamDO teamDO = teamDOS.get(teamNum - 1);
         TeamMemberQuery memberQuery = new TeamMemberQuery();
-        memberQuery.setTeamId(teamDOS.get(0).getId());
+        memberQuery.setTeamId(teamDO.getId());
         List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
         Map<Long, TeamMemberDO> memberMap = teamMemberDOS.stream().collect(Collectors.toMap(TeamMemberDO::getLocation, Function.identity(), (x, y) -> x));
         // 查看位置是否有人

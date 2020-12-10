@@ -58,14 +58,6 @@ public class JinZuFacade implements MessageFacade {
         }
         // 获取真实群数据
         Group realGroup = RobotStar.bot.getGroup(group.getId());
-        // 获取输入口令人昵称
-        String nick = "团长";
-        try {
-            nick = realGroup.get(sender.getId()).getNick();
-        } catch (Exception e) {
-            RobotStar.bot.getFriend(CommonConstant.errorSendId).sendMessage("获取群成员昵称错误!群ID:" + group.getId() +
-                    ",成员ID:" + sender.getId());
-        }
         // 消息链
         MessageChainBuilder sendMessage = new MessageChainBuilder(teamDOS.size() + 1);
         for (TeamMemberDO teamMemberDO : teamMemberDOS) {
@@ -82,6 +74,6 @@ public class JinZuFacade implements MessageFacade {
         }
         // 群消息发送
         MessageChain build = sendMessage.build();
-        SendHelper.sendSing(group,build.plus(new PlainText("快点进组,再鸽" + nick + "要破防啦!!")));
+        SendHelper.sendSing(group,build.plus(new PlainText("快点进组,再鸽团长要破防啦!!")));
     }
 }

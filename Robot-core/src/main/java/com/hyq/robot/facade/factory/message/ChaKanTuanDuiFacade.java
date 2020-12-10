@@ -51,15 +51,20 @@ public class ChaKanTuanDuiFacade implements MessageFacade {
             SendHelper.sendSing(group,at.plus("群内暂无有效团队,请确认。"));
             return ;
         }
-        // 查询团队成员
-        TeamMemberQuery memberQuery = new TeamMemberQuery();
-        memberQuery.setTeamId(teamDOS.get(0).getId());
-        List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
-        // 渲染HTML
-        String htmlStr = GroupMemberUtil.replaceMember(teamDOS.get(0).getTeamName(), teamMemberDOS);
-        HtmlImageGenerator generator = new HtmlImageGenerator();
-        generator.loadHtml(GroupMemberUtil.replaceInit("",htmlStr));
-        Image image = group.uploadImage(generator.getBufferedImage());
-        SendHelper.sendSing(group,at.plus("团队详情如下:").plus(image));
+
+        int i = 1;
+        for (TeamDO teamDO : teamDOS) {
+            // 查询团队成员
+            TeamMemberQuery memberQuery = new TeamMemberQuery();
+            memberQuery.setTeamId(teamDO.getId());
+            List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
+            // 渲染HTML
+            String htmlStr = GroupMemberUtil.replaceMember(teamDO.getTeamName(), teamMemberDOS);
+            HtmlImageGenerator generator = new HtmlImageGenerator();
+            generator.loadHtml(GroupMemberUtil.replaceInit("",htmlStr));
+            Image image = group.uploadImage(generator.getBufferedImage());
+            SendHelper.sendSing(group,at.plus("团队" + i + "详情如下:").plus(image));
+            i++;
+        }
     }
 }
