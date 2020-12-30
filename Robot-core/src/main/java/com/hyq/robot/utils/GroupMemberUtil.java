@@ -31,8 +31,8 @@ public class GroupMemberUtil {
         String originStr = CommonConstant.htmlStr.replace("开团标题",teamName);
         for (TeamMemberDO memberDO : memberDOS) {
             originStr = originStr
-                    .replace("颜色" + memberDO.getLocation(),memberDO.getColor())
-                    .replace("成员" + memberDO.getLocation(),memberDO.getPosition() + "->>" + memberDO.getMemberName());
+                    .replace("图片" + memberDO.getLocation(),memberDO.getColor())
+                    .replace("成员" + memberDO.getLocation(),memberDO.getMemberName());
         }
         return originStr;
     }
@@ -48,59 +48,59 @@ public class GroupMemberUtil {
                 .replace("开团标题",teamName)
 
                 .replace("成员11","")
-                .replace("颜色11","#FDFFFF")
+                .replace("图片11","")
                 .replace("成员12","")
-                .replace("颜色12","#FDFFFF")
+                .replace("图片12","")
                 .replace("成员13","")
-                .replace("颜色13","#FDFFFF")
+                .replace("图片13","")
                 .replace("成员14","")
-                .replace("颜色14","#FDFFFF")
+                .replace("图片14","")
                 .replace("成员15","")
-                .replace("颜色15","#FDFFFF")
+                .replace("图片15","")
 
                 .replace("成员21","")
-                .replace("颜色21","#FDFFFF")
+                .replace("图片21","")
                 .replace("成员22","")
-                .replace("颜色22","#FDFFFF")
+                .replace("图片22","")
                 .replace("成员23","")
-                .replace("颜色23","#FDFFFF")
+                .replace("图片23","")
                 .replace("成员24","")
-                .replace("颜色24","#FDFFFF")
+                .replace("图片24","")
                 .replace("成员25","")
-                .replace("颜色25","#FDFFFF")
+                .replace("图片25","")
 
                 .replace("成员31","")
-                .replace("颜色31","#FDFFFF")
+                .replace("图片31","")
                 .replace("成员32","")
-                .replace("颜色32","#FDFFFF")
+                .replace("图片32","")
                 .replace("成员33","")
-                .replace("颜色33","#FDFFFF")
+                .replace("图片33","")
                 .replace("成员34","")
-                .replace("颜色34","#FDFFFF")
+                .replace("图片34","")
                 .replace("成员35","")
-                .replace("颜色35","#FDFFFF")
+                .replace("图片35","")
 
                 .replace("成员41","")
-                .replace("颜色41","#FDFFFF")
+                .replace("图片41","")
                 .replace("成员42","")
-                .replace("颜色42","#FDFFFF")
+                .replace("图片42","")
                 .replace("成员43","")
-                .replace("颜色43","#FDFFFF")
+                .replace("图片43","")
                 .replace("成员44","")
-                .replace("颜色44","#FDFFFF")
+                .replace("图片44","")
                 .replace("成员45","")
-                .replace("颜色45","#FDFFFF")
+                .replace("图片45","")
 
                 .replace("成员51","")
-                .replace("颜色51","#FDFFFF")
+                .replace("图片51","")
                 .replace("成员52","")
-                .replace("颜色52","#FDFFFF")
+                .replace("图片52","")
                 .replace("成员53","")
-                .replace("颜色53","#FDFFFF")
+                .replace("图片53","")
                 .replace("成员54","")
-                .replace("颜色54","#FDFFFF")
+                .replace("图片54","")
                 .replace("成员55","")
-                .replace("颜色55","#FDFFFF");
+                .replace("图片55","");
     }
 
     /**

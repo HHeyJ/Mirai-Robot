@@ -19,66 +19,212 @@ public interface CommonConstant {
      */
     String htmlStr = "<!DOCTYPE html>\n" +
             "<html>\n" +
+            "\n" +
             "<head>\n" +
-            "\t<!-- CSS goes in the document HEAD or added to your external stylesheet -->\n" +
-            "\t<style type=\"text/css\">\n" +
-            "\t\ttable.one {\n" +
-            "\t\t    font-family: verdana,arial,sans-serif;\n" +
-            "\t\t    font-size:11px;\n" +
-            "\t\t    color:#333333;\n" +
-            "\t\t    border-width: 1px;\n" +
-            "\t\t    border-color: #666666;\n" +
-            "\t\t    border-collapse: collapse;\n" +
-            "\t\t}\n" +
-            "\t\ttable.one th {\n" +
-            "\t\t    border-width: 1px;\n" +
-            "\t\t    padding: 8px;\n" +
-            "\t\t    border-style: solid;\n" +
-            "\t\t    border-color: #666666;\n" +
-            "\t\t    background-color: #dedede;\n" +
-            "\t\t    width: 115px;\n" +
-            "\t\t    height: 30px;\n" +
-            "\t\t}\n" +
-            "\t\ttable.one td {\n" +
-            "\t\t    border-width: 1px;\n" +
-            "\t\t    padding: 8px;\n" +
-            "\t\t    border-style: solid;\n" +
-            "\t\t    border-color: #666666;\n" +
-            "\t\t    width: 115px;\n" +
-            "\t\t    height: 30px;\n" +
-            "\t\t}\n" +
-            "\t</style>\n" +
-            "\t\n" +
-            "\t<title>?????????????</title>\n" +
+            "    <!-- CSS goes in the document HEAD or added to your external stylesheet -->\n" +
+            "    <style type=\"text/css\">\n" +
+            "        table.one {\n" +
+            "            font-family: verdana, arial, sans-serif;\n" +
+            "            font-size: 11px;\n" +
+            "            color: #333333;\n" +
+            "            border-width: 1px;\n" +
+            "            border-color: #666666;\n" +
+            "            border-collapse: collapse;\n" +
+            "        }\n" +
+            "\n" +
+            "        table.one th {\n" +
+            "            border-width: 1px;\n" +
+            "            padding: 8px;\n" +
+            "            border-style: solid;\n" +
+            "            border-color: #666666;\n" +
+            "            background-color: #dedede;\n" +
+            "            width: 150px;\n" +
+            "            height: 30px;\n" +
+            "        }\n" +
+            "\n" +
+            "        table.one td {\n" +
+            "            border-width: 1px;\n" +
+            "            padding: 8px;\n" +
+            "            border-style: solid;\n" +
+            "            border-color: #666666;\n" +
+            "            width: 150px;\n" +
+            "            height: 30px;\n" +
+            "            text-align: center;\n" +
+            "        }\n" +
+            "    </style>\n" +
+            "\n" +
+            "    <title>?????????????</title>\n" +
             "</head>\n" +
+            "\n" +
             "<body>\n" +
-            "\n" +
-            "\t<div>\n" +
-            "\t\t<table class=\"one\">\n" +
-            "\t\t\t<tr>\n" +
-            "\t\t\t\t<th colspan=\"5\">开团标题</th>\n" +
-            "\t\t\t</tr>\n" +
-            "\t\t\t<tr>\n" +
-            "     \t\t\t<th>一队</th><th>二队</th><th>三队</th><th>四队</th><th>五队</th>\n" +
-            " \t\t\t</tr>\n" +
-            " \t\t\t<tr>\n" +
-            "     \t\t\t<td bgcolor=颜色11>成员11</td><td bgcolor=颜色21>成员21</td><td bgcolor=颜色31>成员31</td><td bgcolor=颜色41>成员41</td><td bgcolor=颜色51>成员51</td>\n" +
-            " \t\t\t</tr>\n" +
-            "\t\t\t<tr>\n" +
-            "\t\t\t    <td bgcolor=颜色12>成员12</td><td bgcolor=颜色22>成员22</td><td bgcolor=颜色32>成员32</td><td bgcolor=颜色42>成员42</td><td bgcolor=颜色52>成员52</td>\n" +
-            "\t\t\t</tr>\n" +
-            "\t\t\t<tr>\n" +
-            "\t\t\t    <td bgcolor=颜色13>成员13</td><td bgcolor=颜色23>成员23</td><td bgcolor=颜色33>成员33</td><td bgcolor=颜色43>成员43</td><td bgcolor=颜色53>成员53</td>\n" +
-            "\t\t\t</tr>\n" +
-            "\t\t\t<tr>\n" +
-            "\t\t\t    <td bgcolor=颜色14>成员14</td><td bgcolor=颜色24>成员24</td><td bgcolor=颜色34>成员34</td><td bgcolor=颜色44>成员44</td><td bgcolor=颜色54>成员54</td>\n" +
-            "\t\t\t</tr>\n" +
-            "\t\t\t<tr>\n" +
-            "\t\t\t    <td bgcolor=颜色15>成员15</td><td bgcolor=颜色25>成员25</td><td bgcolor=颜色35>成员35</td><td bgcolor=颜色45>成员45</td><td bgcolor=颜色55>成员55</td>\n" +
-            "\t\t\t</tr>\n" +
-            "\t\t</table>\n" +
-            "\t</div>\n" +
-            "\n" +
+            "    <div>\n" +
+            "        <table class=\"one\">\n" +
+            "            <tr><th colspan=\"5\">开团标题</th></tr>\n" +
+            "            <tr>\n" +
+            "                <th>一队</th><th>二队</th><th>三队</th><th>四队</th><th>五队</th>\n" +
+            "            </tr>\n" +
+            "            <tr>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片11\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员11</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片21\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员21</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片31\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员31</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片41\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员41</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片51\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员51</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "            </tr>\n" +
+            "            <tr>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片12\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员12</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片22\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员22</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片32\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员32</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片42\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员42</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片52\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员52</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "            </tr>\n" +
+            "            <tr>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片13\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员13</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片23\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员23</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片33\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员33</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片43\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员43</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片53\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员53</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "            </tr>\n" +
+            "            <tr>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片14\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员14</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片24\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员24</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片34\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员34</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片44\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员44</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片54\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员54</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "            </tr>\n" +
+            "            <tr>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片15\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员15</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片25\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员25</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片35\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员35</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片45\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员45</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "                <td bgcolor=#FFFFFF>\n" +
+            "                    <div>\n" +
+            "                        <img src=\"图片55\" style=\"margin-right: 20px;\" />\n" +
+            "                        <span>成员55</span>\n" +
+            "                    </div>\n" +
+            "                </td>\n" +
+            "            </tr>\n" +
+            "        </table>\n" +
+            "    </div>\n" +
             "</body>\n" +
             "</html>";
 
