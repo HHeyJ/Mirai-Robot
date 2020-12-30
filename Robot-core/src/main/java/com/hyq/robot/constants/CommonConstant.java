@@ -27,26 +27,26 @@ public interface CommonConstant {
             "            font-family: verdana, arial, sans-serif;\n" +
             "            font-size: 11px;\n" +
             "            color: #333333;\n" +
-            "            border-width: 1px;\n" +
-            "            border-color: #666666;\n" +
+//            "            border-width: 1px;\n" +
+//            "            border-color: #666666;\n" +
             "            border-collapse: collapse;\n" +
             "        }\n" +
             "\n" +
             "        table.one th {\n" +
-            "            border-width: 1px;\n" +
+//            "            border-width: 1px;\n" +
             "            padding: 8px;\n" +
-            "            border-style: solid;\n" +
-            "            border-color: #666666;\n" +
+//            "            border-style: solid;\n" +
+//            "            border-color: #666666;\n" +
             "            background-color: #dedede;\n" +
             "            width: 100px;\n" +
             "            height: 30px;\n" +
             "        }\n" +
             "\n" +
             "        table.one td {\n" +
-            "            border-width: 1px;\n" +
+//            "            border-width: 1px;\n" +
             "            padding: 8px;\n" +
-            "            border-style: solid;\n" +
-            "            border-color: #666666;\n" +
+//            "            border-style: solid;\n" +
+//            "            border-color: #666666;\n" +
             "            width: 60px;\n" +
             "            height: 30px;\n" +
             "            text-align: center;\n" +
