@@ -15,6 +15,14 @@ public interface CommonConstant {
      */
     Long selectGroupId = 839762931L;
     /**
+     * 排期指令介绍文档图片
+     */
+    String explainImg = "https://oss.jx3box.com/upload/post/2020/12/31/3835161.jpg";
+    /**
+     * 空白图片
+     */
+    String blankImg = "https://oss.jx3box.com/upload/post/2020/12/30/1901382.png";
+    /**
      * 排期HTML
      */
     String htmlStr = "<!DOCTYPE html>\n" +

@@ -57,8 +57,7 @@ public class BaoMingFacade implements MessageFacade {
         String position = MessageUtil.getKeybyWord(content, 2);
         EnumPosition enumPosition = EnumPosition.get(position);
         if (enumPosition == null) {
-            SendHelper.sendSing(group,at.plus("报名格式:报名 职业 昵称(不填则群名片>QQ昵称) 队伍位置(22 二队第二 不填则默认分配位置)"));
-            SendHelper.sendSing(group,at.plus("职业列表:[衍天,凌雪,蓬莱,霸刀,莫问,奶歌,分山,铁骨,丐帮,焚影,明尊,田螺,惊羽,毒经,奶毒,藏剑,傲血,铁牢,剑纯,气纯,冰心,奶秀,花间,奶花,易筋,洗髓,号来]"));
+            SendHelper.sendSing(group,at.plus("请输入口令：介绍"));
             return ;
         }
         // 检查角色名、位置

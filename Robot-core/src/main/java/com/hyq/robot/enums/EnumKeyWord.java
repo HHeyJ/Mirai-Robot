@@ -26,6 +26,7 @@ public enum EnumKeyWord {
     GROUP_JIAOHUAN(1,10,"交换"),
     GROUP_CANCEL_BAOMING(1,11,"取消报名"),
     GROUP_JINZU(1,12,"上线进组"),
+    GROUP_JIESHAO(1,13,"介绍"),
     /**
      * 私聊口令
      */
