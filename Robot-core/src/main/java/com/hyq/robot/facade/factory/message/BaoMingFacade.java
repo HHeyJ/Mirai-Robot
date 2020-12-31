@@ -15,7 +15,6 @@ import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
-import net.mamoe.mirai.message.data.PlainText;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -58,25 +57,43 @@ public class BaoMingFacade implements MessageFacade {
         String position = MessageUtil.getKeybyWord(content, 2);
         EnumPosition enumPosition = EnumPosition.get(position);
         if (enumPosition == null) {
-            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 职业名 角色名(不填则使用QQ昵称) 队伍位置(22 二队第二 不填则默认分配位置)"));
+            SendHelper.sendSing(group,at.plus("报名格式:报名 职业 昵称(不填则群名片>QQ昵称) 队伍位置(22 二队第二 不填则默认分配位置)"));
             SendHelper.sendSing(group,at.plus("职业列表:[衍天,凌雪,蓬莱,霸刀,莫问,奶歌,分山,铁骨,丐帮,焚影,明尊,田螺,惊羽,毒经,奶毒,藏剑,傲血,铁牢,剑纯,气纯,冰心,奶秀,花间,奶花,易筋,洗髓,号来]"));
             return ;
         }
-        // 检查角色名
-        String memberName = MessageUtil.getKeybyWord(content, 3);
-        if (StringUtils.isBlank(memberName)) {
-            memberName = ((Member) sender).getNick();
-        }
-        // 获取位置
+        // 检查角色名、位置
+        String threeStr = MessageUtil.getKeybyWord(content, 3);
+        // 角色名、位置
         Long location = null;
-        String locationStr = MessageUtil.getKeybyWord(content, 4);
-        try {
-            location = Long.valueOf(locationStr);
-        } catch (Exception e) {}
-        // 检查位置正确性
-        if (!GroupMemberUtil.checkLocation(location)) {
-            SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
-            return ;
+        String memberName = null;
+        // 填了第三个
+        if (StringUtils.isNotBlank(threeStr)) {
+            try {
+                location = Long.valueOf(threeStr);
+                // 填写了队伍位置,未填写昵称
+                if (GroupMemberUtil.checkLocation(location)) {
+                    memberName = ((Member) sender).getNameCard();
+                }
+            } catch (Exception e) {
+                memberName = threeStr;
+            }
+            // 填了第四个
+            String fourStr = MessageUtil.getKeybyWord(content, 4);
+            if (StringUtils.isNotBlank(fourStr)) {
+                try {
+                    location = Long.valueOf(fourStr);
+                } catch (Exception e) {}
+                // 检查位置正确性
+                if (!GroupMemberUtil.checkLocation(location)) {
+                    SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
+                    return ;
+                }
+            } else {
+                // 没填第四个
+            }
+        } else {
+            // 没填第三个
+            memberName = ((Member) sender).getNameCard();
         }
 
         TeamDO teamDO = teamDOS.get(0);
@@ -99,13 +116,11 @@ public class BaoMingFacade implements MessageFacade {
             return ;
         }
 
-
-
         // 报名
         TeamMemberDO insertDO = new TeamMemberDO();
         insertDO.setTeamId(teamDO.getId());
         insertDO.setLocation(location);
-        insertDO.setPosition(enumPosition.position);
+        insertDO.setPosition(enumPosition.position.split(" ")[0]);
         insertDO.setColor(enumPosition.color);
         insertDO.setMemberName(memberName);
         insertDO.setQq(sender.getId());

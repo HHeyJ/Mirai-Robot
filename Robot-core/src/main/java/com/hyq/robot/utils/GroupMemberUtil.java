@@ -2,10 +2,12 @@ package com.hyq.robot.utils;
 
 import com.hyq.robot.DO.TeamMemberDO;
 import com.hyq.robot.constants.CommonConstant;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author nanke
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public class GroupMemberUtil {
 
-    public static ArrayList locationList = new ArrayList(
+    public static ArrayList<Long> locationList = new ArrayList(
             Arrays.asList(
                     11L,12L,13L,14L,15L,
                     21L,22L,23L,24L,25L,
@@ -110,6 +112,20 @@ public class GroupMemberUtil {
      * @return
      */
     public static boolean checkLocation(Long location) {
-        return locationList.contains(location);
+        return location == null || locationList.contains(location);
+    }
+
+    /**
+     * 随机获取一个位置
+     * @param list
+     * @return
+     */
+    public static Long getLocation(List<Long> list) {
+
+        List<Long> collect = locationList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(collect)) {
+            return collect.get(0);
+        }
+        return null;
     }
 }
