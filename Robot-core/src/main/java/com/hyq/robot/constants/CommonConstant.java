@@ -17,7 +17,7 @@ public interface CommonConstant {
     /**
      * 排期指令介绍文档图片
      */
-    String explainImg = "https://oss.jx3box.com/upload/post/2020/12/31/3835161.jpg";
+    String explainImg = "https://oss.jx3box.com/upload/post/2020/12/31/13407.jpg";
     /**
      * 空白图片
      */
