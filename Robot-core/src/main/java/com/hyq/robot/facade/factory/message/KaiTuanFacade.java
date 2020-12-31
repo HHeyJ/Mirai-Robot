@@ -43,13 +43,13 @@ public class KaiTuanFacade implements MessageFacade {
 
         At at = new At((Member) sender);
 
-//        TeamQuery query = new TeamQuery();
-//        query.setGroupId(group.getId());
-//        List<TeamDO> teamDOS = teamDAO.queryByCondition(query);
-//        if (!CollectionUtils.isEmpty(teamDOS)) {
-//            SendHelper.sendSing(group,at.plus(new PlainText("请勿重复开团。")));
-//            return ;
-//        }
+        TeamQuery query = new TeamQuery();
+        query.setGroupId(group.getId());
+        List<TeamDO> teamDOS = teamDAO.queryByCondition(query);
+        if (!CollectionUtils.isEmpty(teamDOS)) {
+            SendHelper.sendSing(group,at.plus(new PlainText("请勿重复开团。")));
+            return ;
+        }
 
         String content = message.contentToString();
         String teamName = MessageUtil.getKeybyWord(content, 2);

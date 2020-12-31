@@ -52,19 +52,16 @@ public class ChaKanTuanDuiFacade implements MessageFacade {
             return ;
         }
 
-        int i = 1;
-        for (TeamDO teamDO : teamDOS) {
-            // 查询团队成员
-            TeamMemberQuery memberQuery = new TeamMemberQuery();
-            memberQuery.setTeamId(teamDO.getId());
-            List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
-            // 渲染HTML
-            String htmlStr = GroupMemberUtil.replaceMember(teamDO.getTeamName(), teamMemberDOS);
-            HtmlImageGenerator generator = new HtmlImageGenerator();
-            generator.loadHtml(GroupMemberUtil.replaceInit("",htmlStr));
-            Image image = group.uploadImage(generator.getBufferedImage());
-            SendHelper.sendSing(group,at.plus("团队" + i + "详情如下:").plus(image));
-            i++;
-        }
+        // 查询团队成员
+        TeamDO teamDO = teamDOS.get(0);
+        TeamMemberQuery memberQuery = new TeamMemberQuery();
+        memberQuery.setTeamId(teamDO.getId());
+        List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
+        // 渲染HTML
+        String htmlStr = GroupMemberUtil.replaceMember(teamDO.getTeamName(), teamMemberDOS);
+        HtmlImageGenerator generator = new HtmlImageGenerator();
+        generator.loadHtml(GroupMemberUtil.replaceInit("",htmlStr));
+        Image image = group.uploadImage(generator.getBufferedImage());
+        SendHelper.sendSing(group,at.plus("团队详情如下:").plus(image));
     }
 }

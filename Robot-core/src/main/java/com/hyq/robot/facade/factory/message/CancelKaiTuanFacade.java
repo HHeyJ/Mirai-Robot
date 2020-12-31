@@ -34,7 +34,7 @@ public class CancelKaiTuanFacade implements MessageFacade {
 
     @Override
     public void execute(Contact sender, Contact group, Message message) {
-        // TODO sender开团权限校验
+
         At at = new At((Member) sender);
 
         TeamQuery query = new TeamQuery();
@@ -46,17 +46,9 @@ public class CancelKaiTuanFacade implements MessageFacade {
             return ;
         }
 
-        String content = message.contentToString();
-        // 团队序号校验
-        String teamNumStr = MessageUtil.getKeybyWord(content, 2);
-        Integer teamNum = MessageUtil.checkTeamNum(teamDOS.size(),teamNumStr);
-        if (teamNum.equals(0) || teamNum.equals(-1)) {
-            SendHelper.sendSing(group,at.plus(new PlainText("请使用口令【查看团队】后选择正确团队序号,从上至下1,2,...,n。")));
-            return ;
-        }
         // 取消团队
         TeamDO updateDO = new TeamDO();
-        updateDO.setId(teamDOS.get(teamNum - 1).getId());
+        updateDO.setId(teamDOS.get(0).getId());
         updateDO.setDelete(1);
         teamDAO.updateById(updateDO);
         SendHelper.sendSing(group,at.plus("取消成功。"));

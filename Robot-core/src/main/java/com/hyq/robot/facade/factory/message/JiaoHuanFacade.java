@@ -54,16 +54,9 @@ public class JiaoHuanFacade implements MessageFacade {
             return ;
         }
         String content = message.contentToString();
-        // 团队序号校验
-        String teamNumStr = MessageUtil.getKeybyWord(content, 2);
-        Integer teamNum = MessageUtil.checkTeamNum(teamDOS.size(),teamNumStr);
-        if (teamNum.equals(0) || teamNum.equals(-1)) {
-            SendHelper.sendSing(group,at.plus(new PlainText("请使用口令【查看团队】后选择正确团队序号,从上至下1,2,...,n。")));
-            return ;
-        }
         // 获取第一个位置
         Long one = null;
-        String oneStr = MessageUtil.getKeybyWord(content, 3);
+        String oneStr = MessageUtil.getKeybyWord(content, 2);
         try {
             one = Long.valueOf(oneStr);
         } catch (Exception e) {
@@ -72,7 +65,7 @@ public class JiaoHuanFacade implements MessageFacade {
         }
         // 获取第二个位置
         Long two = null;
-        String twoStr = MessageUtil.getKeybyWord(content, 4);
+        String twoStr = MessageUtil.getKeybyWord(content, 3);
         try {
             two = Long.valueOf(twoStr);
         } catch (Exception e) {
@@ -85,7 +78,7 @@ public class JiaoHuanFacade implements MessageFacade {
             return ;
         }
         // 获取团队报名情况
-        TeamDO teamDO = teamDOS.get(teamNum - 1);
+        TeamDO teamDO = teamDOS.get(0);
         TeamMemberQuery memberQuery = new TeamMemberQuery();
         memberQuery.setTeamId(teamDO.getId());
         List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);

@@ -14,7 +14,6 @@ public enum EnumKeyWord {
      */
     GROUP_SELECT(1,2,"查询"),
     GROUP_LOVE(1,3,"夸"),
-//    GROUP_FUCK(1,4,"骂人"),
     GROUP_SOUP(1,5,"鸡汤"),
 
     /**

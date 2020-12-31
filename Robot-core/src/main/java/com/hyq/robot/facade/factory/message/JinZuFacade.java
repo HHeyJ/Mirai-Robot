@@ -64,7 +64,7 @@ public class JinZuFacade implements MessageFacade {
             try {
                 Member member = realGroup.get(teamMemberDO.getQq());
                 // 私聊
-                member.sendMessage(new PlainText("团长让你们上线进组啦～再鸽要破防啦!!"));
+                member.sendMessage(new PlainText("团长让你们上线进组啦～"));
                 // 群内AT
                 sendMessage.add(new At(member));
             } catch (Exception e) {
@@ -74,6 +74,6 @@ public class JinZuFacade implements MessageFacade {
         }
         // 群消息发送
         MessageChain build = sendMessage.build();
-        SendHelper.sendSing(group,build.plus(new PlainText("快点进组,再鸽团长要破防啦!!")));
+        SendHelper.sendSing(group,build.plus(new PlainText("快点进组!!")));
     }
 }

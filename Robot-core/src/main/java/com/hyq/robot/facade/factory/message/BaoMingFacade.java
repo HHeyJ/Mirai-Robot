@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author nanke
@@ -53,56 +54,53 @@ public class BaoMingFacade implements MessageFacade {
             return ;
         }
         String content = message.contentToString();
-        // 校验团队序号
-        String teamNumStr = MessageUtil.getKeybyWord(content, 2);
-        Integer teamNum = MessageUtil.checkTeamNum(teamDOS.size(),teamNumStr);
-        if (teamNum.equals(0)) {
-            SendHelper.sendSing(group,at.plus("请确认正确报名格式:报名 团队序号 职业名 角色名 队伍位置(22 二队第二)。"));
-            return ;
-        }
-        if (teamNum.equals(-1)) {
-            SendHelper.sendSing(group,at.plus(new PlainText("请使用口令【查看团队】后选择正确团队序号,从上至下1,2,...,n。")));
-            return ;
-        }
         // 检查职业
-        String position = MessageUtil.getKeybyWord(content, 3);
+        String position = MessageUtil.getKeybyWord(content, 2);
         EnumPosition enumPosition = EnumPosition.get(position);
         if (enumPosition == null) {
-            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 团队序号 职业名 角色名 队伍位置(22 二队第二)"));
+            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 职业名 角色名(不填则使用QQ昵称) 队伍位置(22 二队第二 不填则默认分配位置)"));
             SendHelper.sendSing(group,at.plus("职业列表:[衍天,凌雪,蓬莱,霸刀,莫问,奶歌,分山,铁骨,丐帮,焚影,明尊,田螺,惊羽,毒经,奶毒,藏剑,傲血,铁牢,剑纯,气纯,冰心,奶秀,花间,奶花,易筋,洗髓,号来]"));
             return ;
         }
         // 检查角色名
-        String memberName = MessageUtil.getKeybyWord(content, 4);
+        String memberName = MessageUtil.getKeybyWord(content, 3);
         if (StringUtils.isBlank(memberName)) {
-            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 团队序号 职业名 角色名 队伍位置(22 二队第二)"));
-            return ;
+            memberName = ((Member) sender).getNick();
         }
         // 获取位置
         Long location = null;
-        String locationStr = MessageUtil.getKeybyWord(content, 5);
+        String locationStr = MessageUtil.getKeybyWord(content, 4);
         try {
             location = Long.valueOf(locationStr);
-        } catch (Exception e) {
-            SendHelper.sendSing(group,at.plus("请输入正确报名格式:报名 团队序号 职业名 角色名 队伍位置(22 二队第二)"));
-            return ;
-        }
+        } catch (Exception e) {}
         // 检查位置正确性
         if (!GroupMemberUtil.checkLocation(location)) {
             SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
             return ;
         }
 
-        TeamDO teamDO = teamDOS.get(teamNum - 1);
+        TeamDO teamDO = teamDOS.get(0);
         // 检查位置重复
         TeamMemberQuery memberQuery = new TeamMemberQuery();
         memberQuery.setTeamId(teamDO.getId());
-        memberQuery.setLocation(location);
         List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
-        if (!CollectionUtils.isEmpty(teamMemberDOS)) {
-            SendHelper.sendSing(group,at.plus("报名位置重复,请重新选择或联系团长调整。"));
+        List<Long> locationList = teamMemberDOS.stream().map(TeamMemberDO::getLocation).collect(Collectors.toList());
+        if (location != null) {
+            if (locationList.contains(location)) {
+                SendHelper.sendSing(group,at.plus("报名位置重复,请重新选择或联系团长调整。"));
+                return ;
+            }
+        } else {
+            location = GroupMemberUtil.getLocation(locationList);
+        }
+        // 团队人数已满
+        if (location == null) {
+            SendHelper.sendSing(group,at.plus("当前团队已满,请联系团长调整。"));
             return ;
         }
+
+
+
         // 报名
         TeamMemberDO insertDO = new TeamMemberDO();
         insertDO.setTeamId(teamDO.getId());
