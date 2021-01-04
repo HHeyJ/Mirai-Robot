@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.ServiceStatusRecordDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.ServiceStatusRecordDO">
+		<id property="mainId" column="MAIN_ID" jdbcType="BIGINT" /><!--主服务ID-->
+		<result property="id" column="ID" jdbcType="BIGINT" /><!--主服务ID-->
+		<result property="mainServiceName" column="MAIN_SERVICE_NAME" jdbcType="VARCHAR" /><!--服务器名称-->
+		<result property="openStatus" column="OPEN_STATUS" jdbcType="INTEGER" /><!--0:维护 1:开服-->
+		<result property="openStatusMsg" column="OPEN_STATUS_MSG" jdbcType="INTEGER" /><!--维护 or 开服-->
+		<result property="gmtModify" column="GMT_MODIFY" jdbcType="TIMESTAMP" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP" /><!--创建时间-->
+		<result property="delete" column="DELETE" jdbcType="INTEGER" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ID`,`MAIN_ID`,`MAIN_SERVICE_NAME`,`OPEN_STATUS`,`OPEN_STATUS_MSG`,`GMT_MODIFY`,
+		`GMT_CREATE`,`DELETE`
+	</sql>
+
+	<insert id="insertSelective" parameterType="com.hyq.robot.DO.ServiceStatusRecordDO" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO `service_status_record`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mainId!=null" >`MAIN_ID`,</if>
+			<if test="mainServiceName!=null" >`MAIN_SERVICE_NAME`,</if>
+			<if test="openStatus!=null" >`OPEN_STATUS`,</if>
+			<if test="openStatusMsg!=null" >`OPEN_STATUS_MSG`</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mainId!=null" >#{mainId,jdbcType=BIGINT},</if>
+			<if test="mainServiceName!=null" >#{mainServiceName,jdbcType=VARCHAR},</if>
+			<if test="openStatus!=null" >#{openStatus,jdbcType=INTEGER},</if>
+			<if test="openStatusMsg!=null" >#{openStatusMsg,jdbcType=INTEGER}</if>
+		</trim>
+	</insert>
+
+	<sql id="whereSQL">
+    	<where>
+	        <if test="mainId!=null" > AND `MAIN_ID`=#{mainId,jdbcType=BIGINT}</if>
+			<choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" parameterType="com.qmgyl.product.query" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List"/>
+		FROM `service_status_record`
+		<include refid="whereSQL"/>
+	</select>
+
+	<select id="countByCondition" parameterType="com.qmgyl.product.query" resultType="java.lang.Long">
+		SELECT count(1)
+		FROM `service_status_record`
+		<include refid="whereSQL"/>
+	</select>
+
+
+</mapper>
+
