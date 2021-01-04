@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.SubServiceDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.SubServiceDO">
+		<id property="subId" column="SUB_ID" jdbcType="BIGINT" /><!--子服务ID-->
+		<result property="mainId" column="MAIN_ID" jdbcType="BIGINT" /><!--主服务ID-->
+		<result property="subServiceName" column="SUB_SERVICE_NAME" jdbcType="VARCHAR" /><!--服务器名称-->
+		<result property="gmtModify" column="GMT_MODIFY" jdbcType="TIMESTAMP" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP" /><!--创建时间-->
+		<result property="delete" column="DELETE" jdbcType="INTEGER" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`SUB_ID`,`MAIN_ID`,`SUB_SERVICE_NAME`,`GMT_MODIFY`,`GMT_CREATE`,`DELETE`
+	</sql>
+
+	<sql id="whereSQL">
+    	<where>
+			<if test="subId!=null" > `SUB_ID` = #{subId,jdbcType=BIGINT}</if>
+	        <if test="mainId!=null" > AND `MAIN_ID` = #{mainId,jdbcType=BIGINT}</if>
+	        <if test="subServiceName!=null" > AND `SUB_SERVICE_NAME` = #{subServiceName,jdbcType=VARCHAR}</if>
+			<choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" parameterType="com.hyq.robot.query.SubServiceQuery" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List"/>
+		FROM `sub_service`
+		<include refid="whereSQL"/>
+	</select>
+
+	<select id="countByCondition" parameterType="com.hyq.robot.query.SubServiceQuery" resultType="java.lang.Long">
+		SELECT count(1)
+		FROM `sub_service`
+		<include refid="whereSQL"/>
+	</select>
+
+
+</mapper>
+

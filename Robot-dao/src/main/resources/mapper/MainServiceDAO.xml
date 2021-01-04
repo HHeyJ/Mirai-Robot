@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyq.robot.dao.MainServiceDAO">
+
+	<resultMap id="BaseResultMap" type="com.hyq.robot.DO.MainServiceDO">
+		<id property="mainId" column="MAIN_ID" jdbcType="BIGINT" /><!--主服务ID-->
+		<result property="ipAddress" column="IP_ADDRESS" jdbcType="VARCHAR" /><!--ip地址-->
+		<result property="port" column="PORT" jdbcType="INTEGER" /><!--端口地址-->
+		<result property="areaName" column="AREA_NAME" jdbcType="VARCHAR" /><!--大区名称-->
+		<result property="mainServiceName" column="MAIN_SERVICE_NAME" jdbcType="VARCHAR" /><!--服务器名称-->
+		<result property="openStatus" column="OPEN_STATUS" jdbcType="INTEGER" /><!--0:维护 1:开服-->
+		<result property="gmtModify" column="GMT_MODIFY" jdbcType="TIMESTAMP" /><!--修改时间-->
+		<result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP" /><!--创建时间-->
+		<result property="delete" column="DELETE" jdbcType="INTEGER" /><!--0:否 1:删除-->
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`MAIN_ID`,`IP_ADDRESS`,`PORT`,`AREA_NAME`,`MAIN_SERVICE_NAME`,`OPEN_STATUS`,
+		`GMT_MODIFY`,`GMT_CREATE`,`DELETE`
+	</sql>
+
+	<update id="updateById">
+		UPDATE `main_service`
+		<set>
+			<if test="openStatus!=null" >`OPEN_STATUS`=#{openStatus,jdbcType=INTEGER}</if>
+		</set>
+		WHERE `MAIN_ID` = #{mainId,jdbcType=BIGINT}
+	</update>
+
+	<sql id="whereSQL">
+    	<where>
+			<if test="mainId!=null" > `MAIN_ID`=#{mainId,jdbcType=BIGINT}</if>
+	        <if test="openStatus!=null" > AND `OPEN_STATUS`=#{openStatus,jdbcType=INTEGER}</if>
+			<choose>
+				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
+				<otherwise> AND `DELETE` = 0</otherwise>
+			</choose>
+    	</where>
+    </sql>
+
+	<select id="queryByCondition" parameterType="com.hyq.robot.query.MainServiceQuery" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List"/>
+		FROM `main_service`
+		<include refid="whereSQL"/>
+	</select>
+
+	<select id="countByCondition" parameterType="com.hyq.robot.query.MainServiceQuery" resultType="java.lang.Long">
+		SELECT count(1)
+		FROM `main_service`
+		<include refid="whereSQL"/>
+	</select>
+
+
+</mapper>
+
