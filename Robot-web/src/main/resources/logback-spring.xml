@@ -3,7 +3,7 @@
     <contextName>logback</contextName>
 
     <!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义后，可以使“${}”来使用变量。 -->
-    <property name="log.path" value="../logs/robot" />
+    <property name="log.path" value="./logs" />
     <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%t] %c %M:%L - %m%n"/>
 
     <!-- level为 INFO 日志，时间滚动输出  -->
