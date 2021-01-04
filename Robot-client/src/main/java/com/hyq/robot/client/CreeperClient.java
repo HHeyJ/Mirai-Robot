@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.ProxyConfig;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,6 +15,7 @@ import org.jsoup.nodes.Document;
  * @author nanke
  * @date 2020/3/31 上午12:30
  */
+@Slf4j
 public class CreeperClient {
 
     public static Document getHtmlDocument(String url,String proxyHost,Integer proxyPort) {
@@ -44,7 +46,7 @@ public class CreeperClient {
             // 尝试加载网页
             page = webClient.getPage(url);
         } catch (Exception e) {
-            System.out.println("爬虫失败～,error:" + e);
+            log.error("爬虫失败,URL地址:{}",url,e);
         } finally {
             webClient.close();
         }

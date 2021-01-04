@@ -1,12 +1,11 @@
 package com.hyq.robot.listener;
 
-import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.facade.factory.MessageFactory;
 import com.hyq.robot.facade.factory.message.MessageFacade;
-import com.hyq.robot.star.RobotStar;
 import com.hyq.robot.utils.MessageUtil;
 import kotlin.coroutines.CoroutineContext;
+import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.GroupMessageEvent;
@@ -23,6 +22,7 @@ import javax.annotation.Resource;
  * @date 2020/7/1 下午12:26
  */
 @Service
+@Slf4j
 public class GroupListener extends SimpleListenerHost {
 
     @Resource
@@ -64,7 +64,7 @@ public class GroupListener extends SimpleListenerHost {
          * 异常处理方式
          * 给自己发消息
          */
-        RobotStar.bot.getFriend(CommonConstant.errorSendId).sendMessage("群聊消息处理错误!" + exception.getMessage());
+        log.error("群聊消息处理错误!",exception);
     }
 
     /**

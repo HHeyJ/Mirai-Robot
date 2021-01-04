@@ -1,5 +1,6 @@
 package com.hyq.robot.client;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author nanke
  * @date 2020/3/24 下午3:38
  */
+@Slf4j
 public class HttpClient {
 
     /**
@@ -66,7 +68,7 @@ public class HttpClient {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送 POST 请求出现异常！"+e);
+            log.error("发送 POST 请求出现异常，URL:{}",url,e);
         }
         //使用finally块来关闭输出流、输入流
         finally{
@@ -124,7 +126,7 @@ public class HttpClient {
             }
             EntityUtils.consume(entity);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("发送 GET 请求出现异常，URL:{}，参数:{}",url,params,e);
         }
         return result;
     }

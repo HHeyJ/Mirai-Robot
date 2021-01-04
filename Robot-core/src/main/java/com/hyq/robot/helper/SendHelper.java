@@ -1,12 +1,11 @@
 package com.hyq.robot.helper;
 
-import com.hyq.robot.constants.CommonConstant;
+import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.message.data.Message;
-import net.mamoe.mirai.message.data.PlainText;
 
 import java.util.List;
 
@@ -14,6 +13,7 @@ import java.util.List;
  * @author nanke
  * @date 2020/4/4 上午2:14
  */
+@Slf4j
 public class SendHelper {
 
     /**
@@ -40,8 +40,7 @@ public class SendHelper {
                     Group group = bot.getGroup(groupId);
                     group.sendMessage(message);
                 } catch (Exception e) {
-                    PlainText plainText = new PlainText("群:" + groupId + "未找到。");
-                    bot.getFriend(CommonConstant.errorSendId).sendMessage(plainText);
+                    log.error("群发送消息发生异常,群ID:{}",groupId,e);
                 }
             }
         });

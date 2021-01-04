@@ -34,7 +34,7 @@ public class ServiceStatusRecordDO implements Serializable {
     /**
      * 维护 or 开服
      */
-	private Integer openStatusMsg;
+	private String openStatusMsg;
     /**
      * 修改时间
      */

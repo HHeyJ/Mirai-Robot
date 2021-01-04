@@ -2,7 +2,6 @@ package com.hyq.robot.facade.factory.message;
 
 import com.hyq.robot.DO.TeamDO;
 import com.hyq.robot.DO.TeamMemberDO;
-import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.dao.TeamMemberDAO;
 import com.hyq.robot.enums.EnumKeyWord;
@@ -10,6 +9,7 @@ import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.TeamMemberQuery;
 import com.hyq.robot.query.TeamQuery;
 import com.hyq.robot.star.RobotStar;
+import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
@@ -28,6 +28,7 @@ import java.util.List;
  * 永远不要哭啼！永远不要说再见！永远不要说慌来伤害目己。
  */
 @Component
+@Slf4j
 public class JinZuFacade implements MessageFacade {
 
     @Resource
@@ -68,8 +69,7 @@ public class JinZuFacade implements MessageFacade {
                 // 群内AT
                 sendMessage.add(new At(member));
             } catch (Exception e) {
-                RobotStar.bot.getFriend(CommonConstant.errorSendId).sendMessage("获取群成员处理错误!群ID:" + group.getId() +
-                        ",成员ID:" + teamMemberDO.getQq());
+                log.error("获取群成员处理错误!群ID:{},成员ID:{}",group.getId(),teamMemberDO.getQq(),e);
             }
         }
         // 群消息发送

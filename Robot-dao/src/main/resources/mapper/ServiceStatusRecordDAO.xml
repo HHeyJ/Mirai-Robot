@@ -8,7 +8,7 @@
 		<result property="id" column="ID" jdbcType="BIGINT" /><!--主服务ID-->
 		<result property="mainServiceName" column="MAIN_SERVICE_NAME" jdbcType="VARCHAR" /><!--服务器名称-->
 		<result property="openStatus" column="OPEN_STATUS" jdbcType="INTEGER" /><!--0:维护 1:开服-->
-		<result property="openStatusMsg" column="OPEN_STATUS_MSG" jdbcType="INTEGER" /><!--维护 or 开服-->
+		<result property="openStatusMsg" column="OPEN_STATUS_MSG" jdbcType="VARCHAR" /><!--维护 or 开服-->
 		<result property="gmtModify" column="GMT_MODIFY" jdbcType="TIMESTAMP" /><!--修改时间-->
 		<result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP" /><!--创建时间-->
 		<result property="delete" column="DELETE" jdbcType="INTEGER" /><!--0:否 1:删除-->
@@ -31,7 +31,7 @@
 			<if test="mainId!=null" >#{mainId,jdbcType=BIGINT},</if>
 			<if test="mainServiceName!=null" >#{mainServiceName,jdbcType=VARCHAR},</if>
 			<if test="openStatus!=null" >#{openStatus,jdbcType=INTEGER},</if>
-			<if test="openStatusMsg!=null" >#{openStatusMsg,jdbcType=INTEGER}</if>
+			<if test="openStatusMsg!=null" >#{openStatusMsg,jdbcType=VARCHAR}</if>
 		</trim>
 	</insert>
 
@@ -45,13 +45,13 @@
     	</where>
     </sql>
 
-	<select id="queryByCondition" parameterType="com.qmgyl.product.query" resultMap="BaseResultMap">
+	<select id="queryByCondition" parameterType="com.hyq.robot.query.ServiceStatusRecordQuery" resultMap="BaseResultMap">
 		SELECT <include refid="Base_Column_List"/>
 		FROM `service_status_record`
 		<include refid="whereSQL"/>
 	</select>
 
-	<select id="countByCondition" parameterType="com.qmgyl.product.query" resultType="java.lang.Long">
+	<select id="countByCondition" parameterType="com.hyq.robot.query.ServiceStatusRecordQuery" resultType="java.lang.Long">
 		SELECT count(1)
 		FROM `service_status_record`
 		<include refid="whereSQL"/>
