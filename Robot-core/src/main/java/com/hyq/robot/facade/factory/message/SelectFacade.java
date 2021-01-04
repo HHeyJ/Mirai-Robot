@@ -46,7 +46,7 @@ public class SelectFacade implements MessageFacade {
 
         // 指定官方查询群
         if (!CommonConstant.selectGroupId.equals(group.getId())) {
-            SendHelper.sendSing(group,new PlainText("【黑市查询】请加入查询群【839762931】进行查询。"));
+            SendHelper.sendSing(group,new PlainText("【查询】请加入查询群【839762931】进行查询。"));
             return ;
         }
 
@@ -55,7 +55,7 @@ public class SelectFacade implements MessageFacade {
         String areaKey = getAreaName(content);
         String selectKey = getSelectKey(content);
         if (StringUtils.isBlank(areaKey) || StringUtils.isBlank(selectKey)) {
-            SendHelper.sendSing(group,new PlainText("【黑市查询】错误 请参考:查询 双梦 xx"));
+            SendHelper.sendSing(group,new PlainText("【查询】错误 请参考:查询 双梦 xx"));
             return ;
         }
         // 查询帖子信息
@@ -76,7 +76,7 @@ public class SelectFacade implements MessageFacade {
                         Collectors.toCollection(() -> new TreeSet<BarPostDO>(Comparator.comparing(BarPostDO::getContent))),
                         ArrayList::new));
 
-        String noDataContent = "【" + postLinkDO.getAreaName() + "黑市】" + "近2000楼未匹配到【" + selectKey + "】,换个词试试吧。";
+        String noDataContent = "【" + postLinkDO.getAreaName() + "】近2000楼未匹配到【" + selectKey + "】,换个词试试吧。";
         if (CollectionUtils.isEmpty(hitData)) {
             SendHelper.sendSing(group,new PlainText(noDataContent));
         } else {
@@ -86,7 +86,7 @@ public class SelectFacade implements MessageFacade {
                 hitData = hitData.stream().skip(hitData.size() - 20).limit(200).collect(Collectors.toList());
             }
             hitData.forEach(e -> SendHelper.sendSing(group,
-                    new PlainText("【" + postLinkDO.getAreaName() +"黑市】" + e.getFloorId() + "楼:" + e.getContent())));
+                    new PlainText("【" + postLinkDO.getAreaName() +"】" + e.getFloorId() + "楼:" + e.getContent())));
         }
     }
 

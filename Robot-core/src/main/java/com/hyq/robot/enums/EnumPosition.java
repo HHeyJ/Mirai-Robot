@@ -1,5 +1,7 @@
 package com.hyq.robot.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author nanke
  * @date 2020/7/22 下午8:28
@@ -52,6 +54,11 @@ public enum EnumPosition {
     }
 
     public static EnumPosition get(String position) {
+
+        if (StringUtils.isBlank(position)) {
+            return null;
+        }
+
         for (EnumPosition value : EnumPosition.values()) {
             if (value.position.contains(position)) {
                 return value;

@@ -61,7 +61,7 @@ public class CreeperTask {
                 // 获取入库数据
                 List<Message> messageList = fallLibrary(pageNo,stopPageNo,linkUrl,null,null)
                         .stream()
-                        .map(e -> "【" + postLinkDO.getAreaName() + "黑市播报】" + e.getFloorId() + "楼:" + e.getContent())
+                        .map(e -> "【" + postLinkDO.getAreaName() + "】" + e.getFloorId() + "楼:" + e.getContent())
                         .map(PlainText::new)
                         .collect(Collectors.toList());
                 // 获取播报订阅群
