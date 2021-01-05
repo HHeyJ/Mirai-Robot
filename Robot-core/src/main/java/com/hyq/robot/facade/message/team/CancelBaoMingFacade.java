@@ -1,10 +1,11 @@
-package com.hyq.robot.facade.factory.message;
+package com.hyq.robot.facade.message.team;
 
 import com.hyq.robot.DO.TeamDO;
 import com.hyq.robot.DO.TeamMemberDO;
 import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.dao.TeamMemberDAO;
 import com.hyq.robot.enums.EnumKeyWord;
+import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.TeamMemberQuery;
 import com.hyq.robot.query.TeamQuery;
@@ -14,7 +15,6 @@ import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
-import net.mamoe.mirai.message.data.PlainText;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 

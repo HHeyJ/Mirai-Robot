@@ -1,4 +1,4 @@
-package com.hyq.robot.facade.factory.message;
+package com.hyq.robot.facade.message.team;
 
 import com.hyq.robot.DO.TeamDO;
 import com.hyq.robot.DO.TeamMemberDO;
@@ -6,6 +6,7 @@ import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.dao.TeamMemberDAO;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.enums.EnumPosition;
+import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.TeamMemberQuery;
 import com.hyq.robot.query.TeamQuery;

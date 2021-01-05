@@ -1,7 +1,7 @@
-package com.hyq.robot.facade.factory;
+package com.hyq.robot.facade;
 
 import com.hyq.robot.enums.EnumKeyWord;
-import com.hyq.robot.facade.factory.message.MessageFacade;
+import com.hyq.robot.facade.message.MessageFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

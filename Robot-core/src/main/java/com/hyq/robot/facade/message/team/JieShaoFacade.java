@@ -1,7 +1,8 @@
-package com.hyq.robot.facade.factory.message;
+package com.hyq.robot.facade.message.team;
 
 import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.enums.EnumKeyWord;
+import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;

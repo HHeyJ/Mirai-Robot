@@ -1,7 +1,8 @@
-package com.hyq.robot.facade;
+package com.hyq.robot.utils;
 
 import com.hyq.robot.DO.BarPostDO;
 import com.hyq.robot.client.CreeperClient;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.util.CollectionUtils;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
  * @author nanke
  * @date 2020/7/14 下午6:54
  */
-public class TieBaFacade {
+public class TieBaUtil {
 
     /**
      * 获取帖子总页数
@@ -61,35 +62,22 @@ public class TieBaFacade {
     }
 
     /**
-     * 拼接回复内容
-     * @param dos
+     * 查询
+     * @param content
      * @return
      */
-    public static List<String> wrapContent(List<BarPostDO> dos) {
+    public static boolean messageFilter(String content) {
 
-        List<String> resultList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(dos))
-            return resultList;
-
-        dos.stream().sorted(Comparator.comparing(BarPostDO::getFloorId))
-                .forEach(barPostDO -> resultList.add(barPostDO.getFloorId() + "楼:" + barPostDO.getContent()));
-        return resultList;
-    }
-
-    /**
-     * 拼接回复内容
-     * @param contentList
-     * @param floorList
-     * @return
-     */
-    private static List<String> wrapContent(List<Element> contentList, List<Element> floorList) {
-
-        List<String> resultList = new ArrayList<>();
-        // 拼接
-        for (int i = 0; i < contentList.size() && i < floorList.size(); i++) {
-            String str = floorList.get(i).text() + ":" + contentList.get(i).text();
-            resultList.add(str);
+        if (StringUtils.isBlank(content)
+                || content.length() > 128 || content.contains("代充") || content.contains("呆充")
+                || content.contains("杂货铺") || content.contains("招募") || content.contains("经验+3")
+                || content.contains("代售") || content.contains("扶摇九天") || content.contains("桃宝")
+        ) {
+            return false;
         }
-        return resultList;
+        if (!content.contains("出") && !content.contains("收")) {
+            return false;
+        }
+        return true;
     }
 }

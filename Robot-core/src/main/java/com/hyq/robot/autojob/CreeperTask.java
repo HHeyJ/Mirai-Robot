@@ -7,13 +7,12 @@ import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.dao.BarPostDAO;
 import com.hyq.robot.dao.InformRelationDAO;
 import com.hyq.robot.dao.PostLinkDAO;
-import com.hyq.robot.facade.TieBaFacade;
+import com.hyq.robot.utils.TieBaUtil;
 import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.BarPostQuery;
 import com.hyq.robot.query.InformRelationQuery;
 import com.hyq.robot.query.PostLinkQuery;
 import com.hyq.robot.star.RobotStar;
-import com.hyq.robot.utils.MessageFilter;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +50,7 @@ public class CreeperTask {
             String linkUrl = postLinkDO.getLinkUrl();
             try {
                 // 获取最大楼层
-                Long maxPageNo = TieBaFacade.queryPageNo(linkUrl,null,null);
+                Long maxPageNo = TieBaUtil.queryPageNo(linkUrl,null,null);
                 // 落库最大楼层
                 BarPostQuery barPostQuery = BarPostQuery.builder().postUrl(linkUrl).build();
                 List<BarPostDO> maxFloorIdDOS = barPostDao.queryByCondition(barPostQuery);
@@ -88,7 +87,7 @@ public class CreeperTask {
         List<BarPostDO> result = new ArrayList<>();
         for (int i = pageNo; i <= stopPageNo; i++) {
             // 当前页发言数据
-            Map<String, List<Object>> baseMap = TieBaFacade.handle(postUrl + "?pn=" + i,host,port);
+            Map<String, List<Object>> baseMap = TieBaUtil.handle(postUrl + "?pn=" + i,host,port);
             List<Object> contentList = baseMap.get("contentList");
             List<Object> floorList = baseMap.get("floorList");
             // 过滤已经入库的
@@ -129,7 +128,7 @@ public class CreeperTask {
         for (int i = 0; i < contentList.size() && i < floorList.size(); i++) {
 
             String content = (String) contentList.get(i);
-            if (!MessageFilter.filter(content)) {
+            if (!TieBaUtil.messageFilter(content)) {
                 continue;
             }
 

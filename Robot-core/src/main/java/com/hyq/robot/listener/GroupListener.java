@@ -1,8 +1,8 @@
 package com.hyq.robot.listener;
 
 import com.hyq.robot.enums.EnumKeyWord;
-import com.hyq.robot.facade.factory.MessageFactory;
-import com.hyq.robot.facade.factory.message.MessageFacade;
+import com.hyq.robot.facade.MessageFactory;
+import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.utils.MessageUtil;
 import kotlin.coroutines.CoroutineContext;
 import lombok.extern.slf4j.Slf4j;

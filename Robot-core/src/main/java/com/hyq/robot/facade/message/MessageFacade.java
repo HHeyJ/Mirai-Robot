@@ -1,4 +1,4 @@
-package com.hyq.robot.facade.factory.message;
+package com.hyq.robot.facade.message;
 
 import com.hyq.robot.enums.EnumKeyWord;
 import net.mamoe.mirai.contact.Contact;

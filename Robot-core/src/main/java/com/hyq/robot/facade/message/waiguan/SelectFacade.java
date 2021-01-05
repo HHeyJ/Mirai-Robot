@@ -1,4 +1,4 @@
-package com.hyq.robot.facade.factory.message;
+package com.hyq.robot.facade.message.waiguan;
 
 import com.hyq.robot.DO.BarPostDO;
 import com.hyq.robot.DO.PostLinkDO;
@@ -6,6 +6,7 @@ import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.dao.BarPostDAO;
 import com.hyq.robot.dao.PostLinkDAO;
 import com.hyq.robot.enums.EnumKeyWord;
+import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.BarPostQuery;
 import com.hyq.robot.query.PostLinkQuery;
