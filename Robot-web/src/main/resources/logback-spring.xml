@@ -14,7 +14,7 @@
             <charset>UTF-8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/archive/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>512MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -35,7 +35,7 @@
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/archive/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>512MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -56,7 +56,7 @@
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/archive/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>512MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
