@@ -74,8 +74,8 @@ public class KaiFuChaXunFacade implements MessageFacade {
             String errorStr = "\n";
             for (SubServiceDO subServiceDO : subServiceDOS) {
                 errorStr += String.format("【%s】\n", subServiceDO.getSubServiceName());
-                errorStr = errorStr.substring(0,errorStr.length() - 1);
             }
+            errorStr = errorStr.substring(0,errorStr.length() - 1);
             SendHelper.sendSing(group,at.plus("请选择服务器：" + errorStr));
             return ;
         }
