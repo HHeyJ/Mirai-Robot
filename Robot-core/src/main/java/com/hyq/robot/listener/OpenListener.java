@@ -105,7 +105,7 @@ public class OpenListener {
      */
     private String getSendMessage(MainServiceDO mainDO, List<ServiceStatusRecordDO> openRecordDOS,
                                   List<ServiceStatusRecordDO> closeRecordDOS) {
-        String sendMessage = String.format("\n【%s】%s啦～\n", mainDO.getMainServiceName(),EnumOpenStatus.get(mainDO.getOpenStatus()).desc);
+        String sendMessage = String.format("【%s】%s啦～\n", mainDO.getMainServiceName(),EnumOpenStatus.get(mainDO.getOpenStatus()).desc);
         sendMessage += "近五次开服记录：\n";
         if (CollectionUtils.isEmpty(openRecordDOS)) {
             sendMessage += "暂无开服记录\n";

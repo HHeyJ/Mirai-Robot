@@ -41,7 +41,7 @@ public class CreeperTask {
     @Resource
     private BarPostDAO barPostDao;
 
-    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Scheduled(cron = "0 0/1 * * * ? ")
     public void task() {
 
         List<PostLinkDO> postLinkDOS = postLinkDAO.queryByCondition(new PostLinkQuery());
