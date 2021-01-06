@@ -10,7 +10,7 @@ package com.hyq.robot.enums;
 public enum EnumOpenStatus {
 
     OPEN(1,"开服"),
-    CLOSE(0,"维护中"),
+    CLOSE(0,"维护"),
     ;
 
     EnumOpenStatus(Integer status, String desc) {

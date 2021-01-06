@@ -13,6 +13,7 @@ import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.MainServiceQuery;
 import com.hyq.robot.query.ServiceStatusRecordQuery;
 import com.hyq.robot.query.SubServiceQuery;
+import com.hyq.robot.utils.DateUtil;
 import com.hyq.robot.utils.MessageUtil;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Member;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -35,8 +35,6 @@ import java.util.List;
  */
 @Component
 public class KaiFuChaXunFacade implements MessageFacade {
-
-    private static final SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Resource
     private SubServiceDAO subServiceDAO;
@@ -118,7 +116,7 @@ public class KaiFuChaXunFacade implements MessageFacade {
             sendMessage += "暂无开服记录\n";
         } else {
             for (ServiceStatusRecordDO recordDO : openRecordDOS) {
-                sendMessage += format.format(recordDO.getGmtCreate()) + "\n";
+                sendMessage += DateUtil.toYMDHMS(recordDO.getGmtCreate()) + "\n";
             }
         }
         sendMessage += "近五次关服记录：\n";
@@ -126,7 +124,7 @@ public class KaiFuChaXunFacade implements MessageFacade {
             sendMessage += "暂无关服记录\n";
         } else {
             for (ServiceStatusRecordDO recordDO : closeRecordDOS) {
-                sendMessage += format.format(recordDO.getGmtCreate()) + "\n";
+                sendMessage += DateUtil.toYMDHMS(recordDO.getGmtCreate()) + "\n";
             }
         }
         return sendMessage.substring(0,sendMessage.length() - 1);
