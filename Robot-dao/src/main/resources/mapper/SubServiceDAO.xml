@@ -20,7 +20,7 @@
     	<where>
 			<if test="subId!=null" > `SUB_ID` = #{subId,jdbcType=BIGINT}</if>
 	        <if test="mainId!=null" > AND `MAIN_ID` = #{mainId,jdbcType=BIGINT}</if>
-	        <if test="subServiceName!=null" > AND `SUB_SERVICE_NAME` = #{subServiceName,jdbcType=VARCHAR}</if>
+	        <if test="subServiceName!=null" > AND `SUB_SERVICE_NAME` LIKE concat('%',#{subServiceName,jdbcType=VARCHAR},'%')</if>
 			<choose>
 				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
 				<otherwise> AND `DELETE` = 0</otherwise>

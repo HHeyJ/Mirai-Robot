@@ -1,3 +1,4 @@
+
 package com.hyq.robot.DO;
 
 import lombok.Data;
@@ -7,16 +8,16 @@ import java.util.Date;
 
 /**
 * @author nanke
-* @date 2021-1-4
+* @date 2021-1-6
 * 致终于来到这里的勇敢的人:
 * 永远不要放弃！永远不要对自己失望！永远不要逃走辜负了自己。
 * 永远不要哭啼！永远不要说再见！永远不要说慌来伤害目己。
 */
 @Data
-public class ServiceStatusRecordDO implements Serializable {
+public class OpenServiceSubscribeDO implements Serializable {
 
     /**
-     * 主服务ID
+     * 记录ID
      */
 	private Long id;
     /**
@@ -24,18 +25,13 @@ public class ServiceStatusRecordDO implements Serializable {
      */
 	private Long mainId;
     /**
-     * 服务器名称
+     * QQ
      */
-	private String mainServiceName;
+	private Long qq;
     /**
-     * 开服状态
-     * @see EnumOpenStatus
+     * QQ群ID
      */
-	private Integer openStatus;
-    /**
-     * @see EnumOpenStatus
-     */
-	private String openStatusMsg;
+	private Long groupId;
     /**
      * 修改时间
      */
@@ -48,6 +44,5 @@ public class ServiceStatusRecordDO implements Serializable {
      * 0:否 1:删除
      */
 	private Integer delete;
-
 }
 

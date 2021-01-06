@@ -1,9 +1,11 @@
 package com.hyq.robot.autojob;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.hyq.robot.DO.MainServiceDO;
-import com.hyq.robot.DO.ServiceStatusRecordDO;
 import com.hyq.robot.dao.MainServiceDAO;
-import com.hyq.robot.dao.ServiceStatusRecordDAO;
+import com.hyq.robot.enums.EnumOpenStatus;
+import com.hyq.robot.facade.trans.OpenServiceTrans;
+import com.hyq.robot.listener.OpenListener;
 import com.hyq.robot.query.MainServiceQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +32,9 @@ public class OpenServiceTask {
     @Resource
     private MainServiceDAO mainServiceDAO;
     @Resource
-    private ServiceStatusRecordDAO serviceStatusRecordDAO;
+    private OpenServiceTrans openServiceTrans;
+    @Resource
+    private AsyncEventBus asyncEventBus;
 
     @Scheduled(cron = "0/10 * * * * ? ")
     public void task() {
@@ -39,20 +43,18 @@ public class OpenServiceTask {
         for (MainServiceDO serviceDO : mainServiceDOS) {
             boolean needRecord = singleService(serviceDO);
             if (needRecord) {
-                // TODO 事务
-                MainServiceDO updateServiceDO = new MainServiceDO();
-                updateServiceDO.setMainId(serviceDO.getMainId());
                 // 设置相反服务器状态
-                Integer openStatus = serviceDO.getOpenStatus().equals(0) ? 1 : 0;
-                updateServiceDO.setOpenStatus(openStatus);
-                mainServiceDAO.updateById(updateServiceDO);
-                // 记录状态
-                ServiceStatusRecordDO insertRecordDO = new ServiceStatusRecordDO();
-                insertRecordDO.setMainId(serviceDO.getMainId());
-                insertRecordDO.setMainServiceName(serviceDO.getMainServiceName());
-                insertRecordDO.setOpenStatus(openStatus);
-                insertRecordDO.setOpenStatusMsg(openStatus.equals(0) ? "关服" : "开服");
-                serviceStatusRecordDAO.insertSelective(insertRecordDO);
+                Integer openStatus = serviceDO.getOpenStatus().equals(EnumOpenStatus.CLOSE.status) ?
+                        EnumOpenStatus.OPEN.status : EnumOpenStatus.CLOSE.status;
+                // 事务
+                try {
+                    openServiceTrans.changeStatus(serviceDO.getMainId(),openStatus,serviceDO.getMainServiceName());
+                    // 触发监听消息通知
+                    asyncEventBus.post(new OpenListener.OpenEvent(serviceDO.getMainId(),openStatus));
+                } catch (Exception e) {
+                    log.error("服务器状态变更事务处理失败,服务器:{},操作前状态:{}",
+                            serviceDO.getMainServiceName(),serviceDO.getOpenStatus(),e);
+                }
             }
         }
     }
@@ -64,7 +66,7 @@ public class OpenServiceTask {
      * @param serviceDO
      * @return
      */
-    private static boolean singleService(MainServiceDO serviceDO) {
+    private boolean singleService(MainServiceDO serviceDO) {
 
         try {
             Socket socket = new Socket();

@@ -27,6 +27,13 @@ public enum EnumKeyWord {
     GROUP_CANCEL_BAOMING(1,11,"取消报名"),
     GROUP_JINZU(1,12,"上线进组"),
     GROUP_JIESHAO(1,13,"介绍"),
+
+    /**
+     * 开服监控
+     */
+    GROUP_KFJK(1,14,"开服监控"),
+    GROUP_QXJK(1,15,"取消监控"),
+    GROUP_KFCX(1,16,"开服查询"),
     /**
      * 私聊口令
      */

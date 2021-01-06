@@ -49,6 +49,7 @@
 		SELECT <include refid="Base_Column_List"/>
 		FROM `service_status_record`
 		<include refid="whereSQL"/>
+		LIMIT #{offset}, #{pageSize}
 	</select>
 
 	<select id="countByCondition" parameterType="com.hyq.robot.query.ServiceStatusRecordQuery" resultType="java.lang.Long">
