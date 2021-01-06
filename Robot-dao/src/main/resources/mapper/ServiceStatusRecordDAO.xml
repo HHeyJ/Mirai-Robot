@@ -37,7 +37,8 @@
 
 	<sql id="whereSQL">
     	<where>
-	        <if test="mainId!=null" > AND `MAIN_ID`=#{mainId,jdbcType=BIGINT}</if>
+	        <if test="mainId!=null" > AND `MAIN_ID` = #{mainId,jdbcType=BIGINT}</if>
+			<if test="openStatus!=null" > AND `OPEN_STATUS` = #{openStatus,jdbcType=INTEGER}</if>
 			<choose>
 				<when test="delete!=null" > AND `DELETE` = #{delete,jdbcType=INTEGER}</when>
 				<otherwise> AND `DELETE` = 0</otherwise>

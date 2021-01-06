@@ -74,6 +74,7 @@ public class KaiFuChaXunFacade implements MessageFacade {
             String errorStr = "\n";
             for (SubServiceDO subServiceDO : subServiceDOS) {
                 errorStr += String.format("【%s】\n", subServiceDO.getSubServiceName());
+                errorStr = errorStr.substring(0,errorStr.length() - 1);
             }
             SendHelper.sendSing(group,at.plus("请选择服务器：" + errorStr));
             return ;
@@ -90,9 +91,12 @@ public class KaiFuChaXunFacade implements MessageFacade {
         recordQuery.setOpenStatus(EnumOpenStatus.OPEN.status);
         recordQuery.setPageNo(1);
         recordQuery.setPageSize(5);
-        List<ServiceStatusRecordDO> recordDOS = serviceStatusRecordDAO.queryByCondition(recordQuery);
+        List<ServiceStatusRecordDO> openRecordDOS = serviceStatusRecordDAO.queryByCondition(recordQuery);
+        // 查询关服记录
+        recordQuery.setOpenStatus(EnumOpenStatus.CLOSE.status);
+        List<ServiceStatusRecordDO> closeRecordDOS = serviceStatusRecordDAO.queryByCondition(recordQuery);
         // 获取回复消息
-        String sendMessage = getSendMessage(mainServiceDOS.get(0), subServiceDO, recordDOS);
+        String sendMessage = getSendMessage(mainServiceDOS.get(0), subServiceDO, openRecordDOS, closeRecordDOS);
         // 发送
         SendHelper.sendSing(group,at.plus(sendMessage));
     }
@@ -101,20 +105,30 @@ public class KaiFuChaXunFacade implements MessageFacade {
      * 获取开服查询回复信息
      * @param mainDO
      * @param subDO
-     * @param recordDOS
+     * @param openRecordDOS
+     * @param closeRecordDOS
      * @return
      */
-    private String getSendMessage(MainServiceDO mainDO, SubServiceDO subDO, List<ServiceStatusRecordDO> recordDOS) {
-        String sendMessage = String.format("主服务器【%s】子服务器【%s】", mainDO.getMainServiceName(),subDO.getSubServiceName());
-        sendMessage += String.format("\n服务器状态【%s】", EnumOpenStatus.get(mainDO.getOpenStatus()).desc);
-        sendMessage += "\n开服记录：\n";
-        if (CollectionUtils.isEmpty(recordDOS)) {
-            sendMessage += "暂无开服记录";
+    private String getSendMessage(MainServiceDO mainDO, SubServiceDO subDO,
+                                  List<ServiceStatusRecordDO> openRecordDOS,List<ServiceStatusRecordDO> closeRecordDOS) {
+        String sendMessage = String.format("\n主服务器【%s】子服务器【%s】\n", mainDO.getMainServiceName(),subDO.getSubServiceName());
+        sendMessage += String.format("服务器状态：%s\n", EnumOpenStatus.get(mainDO.getOpenStatus()).desc);
+        sendMessage += "近五次开服记录：\n";
+        if (CollectionUtils.isEmpty(openRecordDOS)) {
+            sendMessage += "暂无开服记录\n";
         } else {
-            for (ServiceStatusRecordDO recordDO : recordDOS) {
+            for (ServiceStatusRecordDO recordDO : openRecordDOS) {
                 sendMessage += format.format(recordDO.getGmtCreate()) + "\n";
             }
         }
-        return sendMessage;
+        sendMessage += "近五次关服记录：\n";
+        if (CollectionUtils.isEmpty(closeRecordDOS)) {
+            sendMessage += "暂无关服记录\n";
+        } else {
+            for (ServiceStatusRecordDO recordDO : closeRecordDOS) {
+                sendMessage += format.format(recordDO.getGmtCreate()) + "\n";
+            }
+        }
+        return sendMessage.substring(0,sendMessage.length() - 1);
     }
 }
