@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 /**
@@ -70,12 +71,17 @@ public class OpenServiceTask {
 
         try {
             Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(serviceDO.getIpAddress(),serviceDO.getPort()),10000);
+            socket.connect(new InetSocketAddress(serviceDO.getIpAddress(),serviceDO.getPort()),2000);
             if (socket.isConnected() && serviceDO.getOpenStatus().equals(0)) {
                 // 已经开服,但数据库为关服
                 return true;
             }
             if (!socket.isConnected() && serviceDO.getOpenStatus().equals(1)) {
+                // 已经关服,但数据库为开服
+                return true;
+            }
+        } catch (SocketTimeoutException e) {
+            if (serviceDO.getOpenStatus().equals(1)) {
                 // 已经关服,但数据库为开服
                 return true;
             }
