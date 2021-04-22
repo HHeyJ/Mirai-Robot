@@ -2,10 +2,9 @@ package com.hyq.robot.star;
 
 import com.hyq.robot.listener.GroupListener;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.BotFactoryJvm;
-import net.mamoe.mirai.event.Events;
+import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;
-import net.mamoe.mirai.utils.SystemDeviceInfoKt;
+import net.mamoe.mirai.utils.DeviceInfo;
 
 import java.io.File;
 
@@ -22,9 +21,9 @@ public class RobotStar {
 
     static {
         // 机器人
-        bot = BotFactoryJvm.newBot(QQ, PASSWORD, new BotConfiguration() {{
+        bot = BotFactory.INSTANCE.newBot(QQ, PASSWORD, new BotConfiguration() {{
             // 设备缓存信息
-            setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File(RobotStar.QQ + "L.json"), this.getJson(),context));
+            setDeviceInfo(context -> DeviceInfo.from(new File(RobotStar.QQ + "L.json")));
         }});
         // 登陆
         bot.login();
@@ -35,7 +34,7 @@ public class RobotStar {
         /**
          * 事件监听器注册
          */
-        Events.registerEvents(bot,groupListener);
+        bot.getEventChannel().registerListenerHost(groupListener);
         /**
          * 挂载该机器人的协程
          */

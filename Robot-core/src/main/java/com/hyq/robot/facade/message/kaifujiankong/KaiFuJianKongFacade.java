@@ -45,7 +45,7 @@ public class KaiFuJianKongFacade implements MessageFacade {
     public void execute(Contact sender, Contact group, Message message) {
 
         String content = message.contentToString();
-        At at = new At((Member) sender);
+        At at = new At(sender.getId());
 
         String serviceName = MessageUtil.getKeybyWord(content, 2);
         if (StringUtils.isBlank(serviceName)) {

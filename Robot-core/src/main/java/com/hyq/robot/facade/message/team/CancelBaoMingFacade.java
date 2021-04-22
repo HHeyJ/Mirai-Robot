@@ -41,7 +41,7 @@ public class CancelBaoMingFacade implements MessageFacade {
     @Override
     public void execute(Contact sender, Contact group, Message message) {
 
-        At at = new At((Member) sender);
+        At at = new At(sender.getId());
         String content = message.contentToString();
 
         // 群内是否开团

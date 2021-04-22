@@ -8,14 +8,16 @@ import kotlin.coroutines.CoroutineContext;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
-import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.MessageContent;
 import net.mamoe.mirai.message.data.PlainText;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * @author nanke
@@ -29,14 +31,15 @@ public class GroupListener extends SimpleListenerHost {
     private MessageFactory messageFactory;
 
     @EventHandler
-    public void onMessage(GroupMessageEvent event) {
+    public void onMessage(GroupMessageEvent event) throws IOException {
 
         /**
          * 消息链
          */
         MessageChain messageChain = event.getMessage();
-        PlainText plainText = messageChain.first(PlainText.Key);
-        if (plainText != null) {
+        boolean contains = messageChain.contains(PlainText.Key);
+        if (contains) {
+            MessageContent plainText = messageChain.get(PlainText.Key);
             // 关键词检索
             EnumKeyWord ruleEnum = EnumKeyWord.groupFind(MessageUtil.getKeybyWord(plainText.contentToString(),1));
             if (ruleEnum == null) {
@@ -45,7 +48,7 @@ public class GroupListener extends SimpleListenerHost {
             // 是否拥有权限
             boolean havePower = checkPower(ruleEnum, event);
             if (!havePower) {
-                event.getGroup().sendMessage(new At(event.getSender()).plus(new PlainText("爬")));
+                event.getGroup().sendMessage(new At(event.getSender().getId()).plus(new PlainText("爬")));
                 return ;
             }
             // 会话处理器

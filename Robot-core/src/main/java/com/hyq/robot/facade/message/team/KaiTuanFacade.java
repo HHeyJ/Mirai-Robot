@@ -16,11 +16,15 @@ import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
+import net.mamoe.mirai.utils.ExternalResource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -40,9 +44,9 @@ public class KaiTuanFacade implements MessageFacade {
     }
 
     @Override
-    public void execute(Contact sender, Contact group, Message message) {
+    public void execute(Contact sender, Contact group, Message message) throws IOException {
 
-        At at = new At((Member) sender);
+        At at = new At(sender.getId());
 
         TeamQuery query = new TeamQuery();
         query.setGroupId(group.getId());
@@ -67,7 +71,14 @@ public class KaiTuanFacade implements MessageFacade {
         HtmlImageGenerator generator = new HtmlImageGenerator();
         generator.loadHtml(GroupMemberUtil.replaceInit(teamName,CommonConstant.htmlStr));
 
-        Image image = group.uploadImage(generator.getBufferedImage());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(generator.getBufferedImage(),"jpg",out);
+
+        byte[] bytes = out.toByteArray();
+
+        ExternalResource externalResource = ExternalResource.create(bytes);
+
+        Image image = group.uploadImage(externalResource);
         SendHelper.sendSing(group,at.plus("开团成功。").plus(image));
     }
 

@@ -4,6 +4,8 @@ import com.hyq.robot.enums.EnumKeyWord;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.message.data.Message;
 
+import java.io.IOException;
+
 /**
  * @author nanke
  * @date 2020/7/22 下午1:06
@@ -22,5 +24,5 @@ public interface MessageFacade {
      * @param group
      * @param message
      */
-    public void execute(Contact sender, Contact group, Message message);
+    public void execute(Contact sender, Contact group, Message message) throws IOException;
 }

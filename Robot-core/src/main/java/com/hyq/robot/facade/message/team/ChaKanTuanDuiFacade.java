@@ -16,10 +16,14 @@ import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.Message;
+import net.mamoe.mirai.utils.ExternalResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,9 +44,9 @@ public class ChaKanTuanDuiFacade implements MessageFacade {
     }
 
     @Override
-    public void execute(Contact sender, Contact group, Message message) {
+    public void execute(Contact sender, Contact group, Message message) throws IOException {
 
-        At at = new At((Member) sender);
+        At at = new At(sender.getId());
         // 查询群内团队
         TeamQuery teamQuery = new TeamQuery();
         teamQuery.setGroupId(group.getId());
@@ -61,7 +65,14 @@ public class ChaKanTuanDuiFacade implements MessageFacade {
         String htmlStr = GroupMemberUtil.replaceMember(teamDO.getTeamName(), teamMemberDOS);
         HtmlImageGenerator generator = new HtmlImageGenerator();
         generator.loadHtml(GroupMemberUtil.replaceInit("",htmlStr));
-        Image image = group.uploadImage(generator.getBufferedImage());
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(generator.getBufferedImage(),"jpg",out);
+
+        byte[] bytes = out.toByteArray();
+
+        ExternalResource externalResource = ExternalResource.create(bytes);
+        Image image = group.uploadImage(externalResource);
         SendHelper.sendSing(group,at.plus("团队详情如下:").plus(image));
     }
 }

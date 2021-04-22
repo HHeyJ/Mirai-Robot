@@ -13,9 +13,6 @@ public enum EnumKeyWord {
      * 查询?双梦?踏云
      */
     GROUP_SELECT(1,2,"查询"),
-    GROUP_LOVE(1,3,"夸"),
-    GROUP_SOUP(1,5,"鸡汤"),
-
     /**
      * 副本排单助手
      */
@@ -27,7 +24,6 @@ public enum EnumKeyWord {
     GROUP_CANCEL_BAOMING(1,11,"取消报名"),
     GROUP_JINZU(1,12,"上线进组"),
     GROUP_JIESHAO(1,13,"介绍"),
-
     /**
      * 开服监控
      */

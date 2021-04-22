@@ -35,7 +35,7 @@ public class CancelKaiTuanFacade implements MessageFacade {
     @Override
     public void execute(Contact sender, Contact group, Message message) {
 
-        At at = new At((Member) sender);
+        At at = new At(sender.getId());
 
         TeamQuery query = new TeamQuery();
         query.setGroupId(group.getId());
