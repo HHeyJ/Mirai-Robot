@@ -72,7 +72,7 @@ public class KaiTuanFacade implements MessageFacade {
         generator.loadHtml(GroupMemberUtil.replaceInit(teamName,CommonConstant.htmlStr));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ImageIO.write(generator.getBufferedImage(),"jpg",out);
+        ImageIO.write(generator.getBufferedImage(),"png",out);
 
         byte[] bytes = out.toByteArray();
 
