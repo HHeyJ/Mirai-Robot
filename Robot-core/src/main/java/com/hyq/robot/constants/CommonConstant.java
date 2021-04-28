@@ -21,7 +21,7 @@ public interface CommonConstant {
     /**
      * 空白图片
      */
-    String blankImg = "https://oss.jx3box.com/upload/post/2020/12/30/1901382.png";
+    String blankImg = "https://qm-oss.oss-cn-hangzhou.aliyuncs.com/cmall/ba7d9112-eb2b-4efc-862a-77cb7d2d6373.png";
     /**
      * 排期HTML
      */
