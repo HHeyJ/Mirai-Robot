@@ -54,8 +54,10 @@ public class GroupListener extends SimpleListenerHost {
                     At at = (At) one;
                     long target = at.getTarget();
                     if (CommonConstant.robotQQ.equals(target)) {
-                        String s = aiChatRepository.qinYun(plainText.contentToString());
-                        SendHelper.sendSing(event.getGroup(),new At(event.getSender().getId()).plus(s));
+                        String s = aiChatRepository.qinYun(plainText.contentToString().replace(" ",""))
+                                .replace("菲菲","大哥")
+                                .replace("您","你");
+                        SendHelper.sendSing(event.getGroup(),new PlainText(s));
                     }
                 } catch (Exception e) {}
                 return ;
