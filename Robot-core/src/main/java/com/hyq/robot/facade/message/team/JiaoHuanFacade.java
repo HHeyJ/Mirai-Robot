@@ -2,21 +2,17 @@ package com.hyq.robot.facade.message.team;
 
 import com.hyq.robot.DO.TeamDO;
 import com.hyq.robot.DO.TeamMemberDO;
-import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.dao.TeamMemberDAO;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
-import com.hyq.robot.query.TeamMemberQuery;
-import com.hyq.robot.query.TeamQuery;
 import com.hyq.robot.utils.GroupMemberUtil;
 import com.hyq.robot.utils.MessageUtil;
 import net.mamoe.mirai.contact.Contact;
-import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,10 +25,8 @@ import java.util.stream.Collectors;
  * @date 2020/7/22 下午8:48
  */
 @Component
-public class JiaoHuanFacade implements MessageFacade {
+public class JiaoHuanFacade extends TeamFacade implements MessageFacade {
 
-    @Resource
-    private TeamDAO teamDAO;
     @Resource
     private TeamMemberDAO teamMemberDAO;
 
@@ -46,42 +40,30 @@ public class JiaoHuanFacade implements MessageFacade {
 
         At at = new At(sender.getId());
         // 检查群内是否开团
-        TeamQuery query = new TeamQuery();
-        query.setGroupId(group.getId());
-        List<TeamDO> teamDOS = teamDAO.queryByCondition(query);
-        if (CollectionUtils.isEmpty(teamDOS)) {
-            SendHelper.sendSing(group,at.plus("暂无有效团队,请确认。"));
+        String errorMsg = checkTeam(group.getId());
+        if (StringUtils.isNotBlank(errorMsg)) {
+            SendHelper.sendSing(group,at.plus(errorMsg));
             return ;
         }
+
         String content = message.contentToString();
-        // 获取第一个位置
-        Long one = null;
+        // 第一个位置/第二个位置
+        Long one = null; Long two = null;
         String oneStr = MessageUtil.getKeybyWord(content, 2);
-        try {
-            one = Long.valueOf(oneStr);
-        } catch (Exception e) {
-            SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
-            return ;
-        }
-        // 获取第二个位置
-        Long two = null;
         String twoStr = MessageUtil.getKeybyWord(content, 3);
         try {
+            one = Long.valueOf(oneStr);
             two = Long.valueOf(twoStr);
+            if (!GroupMemberUtil.checkLocation(one) || !GroupMemberUtil.checkLocation(two)) {
+                throw new RuntimeException();
+            }
         } catch (Exception e) {
-            SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
-            return ;
-        }
-        // 检查位置正确性
-        if (!GroupMemberUtil.checkLocation(one) || !GroupMemberUtil.checkLocation(two)) {
-            SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
+            SendHelper.sendSing(group,at.plus("🙅暗号错误"));
             return ;
         }
         // 获取团队报名情况
-        TeamDO teamDO = teamDOS.get(0);
-        TeamMemberQuery memberQuery = new TeamMemberQuery();
-        memberQuery.setTeamId(teamDO.getId());
-        List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
+        TeamDO teamDO = getTeam(group.getId());
+        List<TeamMemberDO> teamMemberDOS = getTeamMember(teamDO.getId(),null);
         Map<Long, TeamMemberDO> memberMap = teamMemberDOS.stream().collect(Collectors.toMap(TeamMemberDO::getLocation, Function.identity(), (x, y) -> x));
         // 查看位置是否有人
         TeamMemberDO oneMember = memberMap.get(one);
@@ -100,6 +82,6 @@ public class JiaoHuanFacade implements MessageFacade {
             updateDO.setLocation(one);
             teamMemberDAO.updateLocationById(updateDO);
         }
-        SendHelper.sendSing(group,at.plus("操作成功。"));
+        SendHelper.sendSing(group,at.plus("👌"));
     }
 }

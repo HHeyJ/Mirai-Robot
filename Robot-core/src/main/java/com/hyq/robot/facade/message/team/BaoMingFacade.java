@@ -2,14 +2,11 @@ package com.hyq.robot.facade.message.team;
 
 import com.hyq.robot.DO.TeamDO;
 import com.hyq.robot.DO.TeamMemberDO;
-import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.dao.TeamMemberDAO;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.enums.EnumPosition;
 import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
-import com.hyq.robot.query.TeamMemberQuery;
-import com.hyq.robot.query.TeamQuery;
 import com.hyq.robot.utils.GroupMemberUtil;
 import com.hyq.robot.utils.MessageUtil;
 import net.mamoe.mirai.contact.Contact;
@@ -29,10 +26,8 @@ import java.util.stream.Collectors;
  * @date 2020/7/22 下午8:48
  */
 @Component
-public class BaoMingFacade implements MessageFacade {
+public class BaoMingFacade extends TeamFacade implements MessageFacade {
 
-    @Resource
-    private TeamDAO teamDAO;
     @Resource
     private TeamMemberDAO teamMemberDAO;
 
@@ -46,19 +41,18 @@ public class BaoMingFacade implements MessageFacade {
 
         At at = new At(sender.getId());
         // 检查群内是否开团
-        TeamQuery query = new TeamQuery();
-        query.setGroupId(group.getId());
-        List<TeamDO> teamDOS = teamDAO.queryByCondition(query);
-        if (CollectionUtils.isEmpty(teamDOS)) {
-            SendHelper.sendSing(group,at.plus("暂无有效团队,请确认。"));
+        String errorMsg = checkTeam(group.getId());
+        if (StringUtils.isNotBlank(errorMsg)) {
+            SendHelper.sendSing(group,at.plus(errorMsg));
             return ;
         }
+
         String content = message.contentToString();
         // 检查职业
         String position = MessageUtil.getKeybyWord(content, 2);
         EnumPosition enumPosition = EnumPosition.get(position);
         if (enumPosition == null) {
-            SendHelper.sendSing(group,at.plus("请输入口令：介绍"));
+            SendHelper.sendSing(group,at.plus("🙅暗号错误"));
             return ;
         }
         // 检查角色名、位置
@@ -85,7 +79,7 @@ public class BaoMingFacade implements MessageFacade {
                 } catch (Exception e) {}
                 // 检查位置正确性
                 if (!GroupMemberUtil.checkLocation(location)) {
-                    SendHelper.sendSing(group,at.plus("请输入正确队伍位置。"));
+                    SendHelper.sendSing(group,at.plus("🙅暗号错误"));
                     return ;
                 }
             } else {
@@ -95,24 +89,20 @@ public class BaoMingFacade implements MessageFacade {
             // 没填第三个
             memberName = ((Member) sender).getNameCard();
         }
-
-        TeamDO teamDO = teamDOS.get(0);
-        // 检查位置重复
-        TeamMemberQuery memberQuery = new TeamMemberQuery();
-        memberQuery.setTeamId(teamDO.getId());
-        List<TeamMemberDO> teamMemberDOS = teamMemberDAO.queryByCondition(memberQuery);
+        // 选位
+        TeamDO teamDO = getTeam(group.getId());
+        List<TeamMemberDO> teamMemberDOS = getTeamMember(teamDO.getId(),location);
         List<Long> locationList = teamMemberDOS.stream().map(TeamMemberDO::getLocation).collect(Collectors.toList());
         if (location != null) {
-            if (locationList.contains(location)) {
-                SendHelper.sendSing(group,at.plus("报名位置重复,请重新选择或联系团长调整。"));
-                return ;
+            if (!CollectionUtils.isEmpty(teamMemberDOS)) {
+                location = GroupMemberUtil.getLocation(locationList);
             }
         } else {
             location = GroupMemberUtil.getLocation(locationList);
         }
-        // 团队人数已满
+
         if (location == null) {
-            SendHelper.sendSing(group,at.plus("当前团队已满,请联系团长调整。"));
+            SendHelper.sendSing(group,at.plus("🙅团队已满"));
             return ;
         }
 
@@ -126,6 +116,6 @@ public class BaoMingFacade implements MessageFacade {
         insertDO.setQq(sender.getId());
         teamMemberDAO.insertSelective(insertDO);
 
-        SendHelper.sendSing(group,at.plus("报名成功。"));
+        SendHelper.sendSing(group,at.plus("👌"));
     }
 }

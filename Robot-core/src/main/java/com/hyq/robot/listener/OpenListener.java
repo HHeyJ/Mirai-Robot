@@ -14,12 +14,12 @@ import com.hyq.robot.helper.SendHelper;
 import com.hyq.robot.query.MainServiceQuery;
 import com.hyq.robot.query.OpenServiceSubscribeQuery;
 import com.hyq.robot.query.ServiceStatusRecordQuery;
-import com.hyq.robot.star.RobotStar;
 import com.hyq.robot.utils.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
 import org.springframework.stereotype.Component;
@@ -50,6 +50,8 @@ public class OpenListener {
     private ServiceStatusRecordDAO serviceStatusRecordDAO;
     @Resource
     private OpenServiceSubscribeDAO openServiceSubscribeDAO;
+    @Resource
+    private Bot bot;
 
     @PostConstruct
     public void register() {
@@ -93,7 +95,7 @@ public class OpenListener {
         Message message = new PlainText(sendMessage);
         // 循环发送
         List<Long> groupIdList = subscribeDOS.stream().map(OpenServiceSubscribeDO::getGroupId).collect(Collectors.toList());
-        SendHelper.sendGroupBatch(RobotStar.bot,groupIdList, Collections.singletonList(message));
+        SendHelper.sendGroupBatch(bot,groupIdList, Collections.singletonList(message));
     }
 
     /**

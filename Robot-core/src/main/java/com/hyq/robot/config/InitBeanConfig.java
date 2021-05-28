@@ -1,9 +1,18 @@
 package com.hyq.robot.config;
 
 import com.google.common.eventbus.AsyncEventBus;
+import com.hyq.robot.constants.CommonConstant;
+import com.hyq.robot.listener.GroupListener;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.utils.BotConfiguration;
+import net.mamoe.mirai.utils.DeviceInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.io.File;
 import java.util.concurrent.Executors;
 
 /**
@@ -16,10 +25,30 @@ import java.util.concurrent.Executors;
 @Configuration
 public class InitBeanConfig {
 
+    @Resource
+    private GroupListener groupListener;
+    @Resource
+    private Bot bot;
+
     @Bean
     public AsyncEventBus asyncEventBus() {
         return new AsyncEventBus(Executors.newFixedThreadPool(5));
     }
 
+    @Bean
+    public Bot mirai() {
+        // 机器人
+        Bot bot = BotFactory.INSTANCE.newBot(CommonConstant.robotQQ, CommonConstant.robotPassword, new BotConfiguration() {{
+            // 设备缓存信息
+            setDeviceInfo(context -> DeviceInfo.from(new File(CommonConstant.robotQQ + "L.json")));
+            setProtocol(MiraiProtocol.ANDROID_PAD);
+        }});
+        bot.getEventChannel().registerListenerHost(groupListener);
+        return bot;
+    }
 
+    @PostConstruct
+    public void login() {
+        bot.login();
+    }
 }

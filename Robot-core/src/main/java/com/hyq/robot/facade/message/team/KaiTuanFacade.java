@@ -1,31 +1,19 @@
 package com.hyq.robot.facade.message.team;
 
 import com.hyq.robot.DO.TeamDO;
-import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.dao.TeamDAO;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.facade.message.MessageFacade;
 import com.hyq.robot.helper.SendHelper;
-import com.hyq.robot.query.TeamQuery;
-import com.hyq.robot.utils.GroupMemberUtil;
 import com.hyq.robot.utils.MessageUtil;
-import gui.ava.html.image.generator.HtmlImageGenerator;
 import net.mamoe.mirai.contact.Contact;
-import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.At;
-import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
-import net.mamoe.mirai.utils.ExternalResource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -33,7 +21,7 @@ import java.util.List;
  * @date 2020/7/22 下午4:53
  */
 @Component
-public class KaiTuanFacade implements MessageFacade {
+public class KaiTuanFacade extends TeamFacade implements MessageFacade {
 
     @Resource
     private TeamDAO teamDAO;
@@ -44,22 +32,21 @@ public class KaiTuanFacade implements MessageFacade {
     }
 
     @Override
-    public void execute(Contact sender, Contact group, Message message) throws IOException {
+    public void execute(Contact sender, Contact group, Message message) {
 
         At at = new At(sender.getId());
 
-        TeamQuery query = new TeamQuery();
-        query.setGroupId(group.getId());
-        List<TeamDO> teamDOS = teamDAO.queryByCondition(query);
-        if (!CollectionUtils.isEmpty(teamDOS)) {
-            SendHelper.sendSing(group,at.plus(new PlainText("请勿重复开团。")));
+        // 检查群内是否开团
+        String errorMsg = checkTeam(group.getId());
+        if (StringUtils.isNotBlank(errorMsg)) {
+            SendHelper.sendSing(group,at.plus(errorMsg));
             return ;
         }
 
         String content = message.contentToString();
         String teamName = MessageUtil.getKeybyWord(content, 2);
         if (StringUtils.isBlank(teamName)) {
-            SendHelper.sendSing(group,at.plus(new PlainText("请输入团名。")));
+            SendHelper.sendSing(group,at.plus(new PlainText("🙅暗号错误")));
             return ;
         }
 
@@ -68,18 +55,7 @@ public class KaiTuanFacade implements MessageFacade {
         insetDO.setTeamName(teamName);
         teamDAO.insertSelective(insetDO);
 
-        HtmlImageGenerator generator = new HtmlImageGenerator();
-        generator.loadHtml(GroupMemberUtil.replaceInit(teamName,CommonConstant.htmlStr));
-
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ImageIO.write(generator.getBufferedImage(),"png",out);
-
-        byte[] bytes = out.toByteArray();
-
-        ExternalResource externalResource = ExternalResource.create(bytes);
-
-        Image image = group.uploadImage(externalResource);
-        SendHelper.sendSing(group,at.plus("开团成功。").plus(image));
+        SendHelper.sendSing(group,at.plus("👌"));
     }
 
 }

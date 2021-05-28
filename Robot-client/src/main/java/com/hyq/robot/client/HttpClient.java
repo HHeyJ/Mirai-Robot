@@ -107,8 +107,8 @@ public class HttpClient {
 
             HttpGet httpGet = new HttpGet(requestUrl);
             RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(2000)
-                    .setConnectTimeout(2000).build();
+                    .setSocketTimeout(20000)
+                    .setConnectTimeout(20000).build();
             httpGet.setConfig(requestConfig);
             // 提交参数发送请求
             response = httpclient.execute(httpGet);

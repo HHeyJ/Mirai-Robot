@@ -7,17 +7,17 @@ package com.hyq.robot.constants;
 public interface CommonConstant {
 
     /**
-     * 错误反馈QQ
+     * 机器人账号
      */
-    Long errorSendId = 1154685452L;
+    Long robotQQ = 430287797L;
+    /**
+     * 机器人密码
+     */
+    String robotPassword = "";
     /**
      * 通知QQ群
      */
     Long selectGroupId = 839762931L;
-    /**
-     * 排期指令介绍文档图片
-     */
-    String explainImg = "https://oss.jx3box.com/upload/post/2020/12/31/13407.jpg";
     /**
      * 空白图片
      */
