@@ -38,8 +38,8 @@ public class KaiTuanFacade extends TeamFacade implements MessageFacade {
 
         // 检查群内是否开团
         String errorMsg = checkTeam(group.getId());
-        if (StringUtils.isNotBlank(errorMsg)) {
-            SendHelper.sendSing(group,at.plus(errorMsg));
+        if (StringUtils.isBlank(errorMsg)) {
+            SendHelper.sendSing(group,at.plus("🙅不准再开"));
             return ;
         }
 
