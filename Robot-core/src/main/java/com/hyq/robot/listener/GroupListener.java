@@ -15,8 +15,8 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.MessageContent;
 import net.mamoe.mirai.message.data.PlainText;
+import net.mamoe.mirai.message.data.SingleMessage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -43,18 +43,18 @@ public class GroupListener extends SimpleListenerHost {
          * 消息链
          */
         MessageChain messageChain = event.getMessage();
-        boolean containsText = messageChain.contains(PlainText.Key);
-        if (containsText) {
-            MessageContent plainText = messageChain.get(PlainText.Key);
+        SingleMessage one = messageChain.get(1);
+        if (one instanceof PlainText || one instanceof At) {
+            PlainText plainText = one instanceof PlainText ? (PlainText) one : (PlainText) messageChain.get(2);
             // 关键词检索
             EnumKeyWord ruleEnum = EnumKeyWord.groupFind(MessageUtil.getKeybyWord(plainText.contentToString(),1));
             if (ruleEnum == null) {
                 // Ai@聊天
                 try {
-                    At at = (At) messageChain.get(At.Key);
+                    At at = (At) one;
                     long target = at.getTarget();
                     if (CommonConstant.robotQQ.equals(target)) {
-                        String s = aiChatRepository.qinYun(plainText.toString());
+                        String s = aiChatRepository.qinYun(plainText.contentToString());
                         SendHelper.sendSing(event.getGroup(),new At(event.getSender().getId()).plus(s));
                     }
                 } catch (Exception e) {}
