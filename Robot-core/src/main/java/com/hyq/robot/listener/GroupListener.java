@@ -1,10 +1,14 @@
 package com.hyq.robot.listener;
 
+import com.hyq.robot.constants.CommonConstant;
 import com.hyq.robot.enums.EnumKeyWord;
 import com.hyq.robot.facade.MessageFactory;
 import com.hyq.robot.facade.message.MessageFacade;
+import com.hyq.robot.helper.SendHelper;
+import com.hyq.robot.repository.AiChatRepository;
 import com.hyq.robot.utils.MessageUtil;
 import kotlin.coroutines.CoroutineContext;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
@@ -17,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author nanke
@@ -29,20 +32,32 @@ public class GroupListener extends SimpleListenerHost {
 
     @Resource
     private MessageFactory messageFactory;
+    @Resource
+    private AiChatRepository aiChatRepository;
 
     @EventHandler
-    public void onMessage(GroupMessageEvent event) throws IOException {
+    @SneakyThrows
+    public void onMessage(GroupMessageEvent event) {
 
         /**
          * 消息链
          */
         MessageChain messageChain = event.getMessage();
-        boolean contains = messageChain.contains(PlainText.Key);
-        if (contains) {
+        boolean containsText = messageChain.contains(PlainText.Key);
+        if (containsText) {
             MessageContent plainText = messageChain.get(PlainText.Key);
             // 关键词检索
             EnumKeyWord ruleEnum = EnumKeyWord.groupFind(MessageUtil.getKeybyWord(plainText.contentToString(),1));
             if (ruleEnum == null) {
+                // Ai@聊天
+                try {
+                    At at = (At) messageChain.get(At.Key);
+                    long target = at.getTarget();
+                    if (CommonConstant.robotQQ.equals(target)) {
+                        String s = aiChatRepository.qinYun(plainText.toString());
+                        SendHelper.sendSing(event.getGroup(),new At(event.getSender().getId()).plus(s));
+                    }
+                } catch (Exception e) {}
                 return ;
             }
             // 是否拥有权限
