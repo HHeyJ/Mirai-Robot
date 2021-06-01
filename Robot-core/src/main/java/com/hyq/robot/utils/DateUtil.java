@@ -12,11 +12,21 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    private static final SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat YMDHMS =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private static final SimpleDateFormat YMD =  new SimpleDateFormat("yyyy-MM-dd");
 
     public static String toYMDHMS(Date date) {
         try {
-            return format.format(date);
+            return YMDHMS.format(date);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public static String toYMD(Date date) {
+        try {
+            return YMD.format(date);
         } catch (Exception e) {
             return "";
         }
