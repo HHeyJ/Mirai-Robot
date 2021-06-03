@@ -15,12 +15,27 @@ import java.util.stream.Collectors;
  */
 public class GroupMemberUtil {
 
-    public static ArrayList<Long> locationList = new ArrayList(
+    public static ArrayList<Long> locationList = new ArrayList<>(
             Arrays.asList(
                     11L,12L,13L,14L,15L,
                     21L,22L,23L,24L,25L,
                     31L,32L,33L,34L,35L,
                     41L,42L,43L,44L,45L,
+                    51L,52L,53L,54L,55L));
+
+    public static ArrayList<Long> waiGongList = new ArrayList<>(
+            Arrays.asList(
+                    11L,12L,13L,14L,15L,
+                    21L,22L,23L,24L,25L));
+
+    public static ArrayList<Long> neiGongList = new ArrayList<>(
+            Arrays.asList(
+                    31L,32L,33L,34L,35L,
+                    41L,42L,43L,44L,45L));
+
+    public static ArrayList<Long> tiNaiList = new ArrayList<>(
+            Arrays.asList(
+                                44L,45L,
                     51L,52L,53L,54L,55L));
 
     /**
@@ -120,7 +135,25 @@ public class GroupMemberUtil {
      * @param list
      * @return
      */
-    public static Long getLocation(List<Long> list) {
+    public static Long getLocation(List<Long> list, String type) {
+
+        if (type.equalsIgnoreCase("外功")) {
+            List<Long> collect = waiGongList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(collect)) {
+                return collect.get(0);
+            }
+        } else if (type.equalsIgnoreCase("内功")) {
+            List<Long> collect = neiGongList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(collect)) {
+                return collect.get(0);
+            }
+        } else {
+            List<Long> collect = tiNaiList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(collect)) {
+                return collect.get(0);
+            }
+        }
+
 
         List<Long> collect = locationList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(collect)) {

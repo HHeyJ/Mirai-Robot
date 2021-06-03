@@ -95,10 +95,10 @@ public class BaoMingFacade extends TeamFacade implements MessageFacade {
         List<Long> locationList = teamMemberDOS.stream().map(TeamMemberDO::getLocation).collect(Collectors.toList());
         if (location != null) {
             if (!CollectionUtils.isEmpty(teamMemberDOS)) {
-                location = GroupMemberUtil.getLocation(locationList);
+                location = GroupMemberUtil.getLocation(locationList,enumPosition.type);
             }
         } else {
-            location = GroupMemberUtil.getLocation(locationList);
+            location = GroupMemberUtil.getLocation(locationList,enumPosition.type);
         }
 
         if (location == null) {
