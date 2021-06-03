@@ -32,7 +32,7 @@ public class GoodMorningTask {
     @Resource
     private OneEnglishRepository oneEnglishRepository;
 
-    @Scheduled(cron = "* 30 8 * * ? ")
+    @Scheduled(cron = "0 30 8 * * ? ")
     public void task() {
 
         OneEnglishRepository.ICiBaBody iCiBaBody = oneEnglishRepository.iCiBa();

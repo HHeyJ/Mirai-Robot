@@ -36,7 +36,7 @@ public enum EnumPosition {
     NAIHUA("奶花 离经","https://img.jx3box.com/image/xf/10028.png","奶妈"),
     YIJING("易筋 和尚","https://img.jx3box.com/image/xf/10003.png","内功"),
     XISUI("洗髓","https://img.jx3box.com/image/xf/10002.png","坦克"),
-    HAOLAI("号来","https://img.jx3box.com/image/xf/0.png","坦克"),
+    HAOLAI("号来","https://img.jx3box.com/image/xf/0.png",""),
     ;
 
     /**

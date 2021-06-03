@@ -33,10 +33,13 @@ public class GroupMemberUtil {
                     31L,32L,33L,34L,35L,
                     41L,42L,43L,44L,45L));
 
-    public static ArrayList<Long> tiNaiList = new ArrayList<>(
+    public static ArrayList<Long> naiMaList = new ArrayList<>(
             Arrays.asList(
-                                44L,45L,
-                    51L,52L,53L,54L,55L));
+                    44L,45L,54L,55L));
+
+    public static ArrayList<Long> tanKeList = new ArrayList<>(
+            Arrays.asList(
+                    51L,52L,53L));
 
     /**
      * 根据团队成员替换HTML中初始元素
@@ -147,13 +150,17 @@ public class GroupMemberUtil {
             if (!CollectionUtils.isEmpty(collect)) {
                 return collect.get(0);
             }
-        } else {
-            List<Long> collect = tiNaiList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
+        } else if (type.equalsIgnoreCase("奶妈")) {
+            List<Long> collect = naiMaList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(collect)) {
+                return collect.get(0);
+            }
+        } else if (type.equalsIgnoreCase("坦克")) {
+            List<Long> collect = tanKeList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(collect)) {
                 return collect.get(0);
             }
         }
-
 
         List<Long> collect = locationList.stream().filter(e -> !list.contains(e)).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(collect)) {
