@@ -23,7 +23,7 @@
         <mybasitVersion>2.1.2</mybasitVersion>
         <druidVersion>1.1.10</druidVersion>
         <htmlunitVersion>2.38.0</htmlunitVersion>
-        <jsoupVersion>1.13.1</jsoupVersion>
+        <jsoupVersion>1.14.2</jsoupVersion>
     </properties>
 
     <!--  spingBoot打包  -->
