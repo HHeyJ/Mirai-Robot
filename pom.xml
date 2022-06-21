@@ -19,7 +19,7 @@
 
     <properties>
         <botVersion>1.0.0</botVersion>
-        <mysqlConnectorVersion>8.0.16</mysqlConnectorVersion>
+        <mysqlConnectorVersion>8.0.28</mysqlConnectorVersion>
         <mybasitVersion>2.2.0</mybasitVersion>
         <druidVersion>1.1.10</druidVersion>
         <htmlunitVersion>2.38.0</htmlunitVersion>
